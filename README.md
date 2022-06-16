@@ -6,6 +6,13 @@ We aim to simulate baseball game outcomes using Monte Carlo simulations.
 
 You must use python 3.10. The parsing file can parse EVA and EVA files given by Retrosheet play by play logs it can also get the player name from the player id (Useful for obtaining player statistics later).
 
+To use this package:
+
+- first install anaconda from [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+- run `conda env create -f environment.yml`
+
+
+
 # Todo
 
 - Need to finish the simulator. In particular, after a game is simulated what should we keep track of (aggregate function) and how do we go from one state to the next (apply outcomes function)
