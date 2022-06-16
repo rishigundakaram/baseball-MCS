@@ -66,3 +66,20 @@ def parse_names(path):
             line = line.split(',')
             players[line[0]] = [line[1], line[2]]
     return players
+
+
+def parse_game_log(path):
+    games = []
+    with open(path) as f: 
+        for line in f: 
+            line = line[:-1]
+            line = line.split(',')
+
+            for idx in range(len(line)): 
+                if line[idx][0] == '\"': 
+                    line[idx] = line[idx][1:-1]
+                else: 
+                    line[idx] = int(line[idx])
+            print(line)
+            if line[0] == "20210403": 
+                exit(1)
