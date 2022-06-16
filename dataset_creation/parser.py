@@ -1,6 +1,3 @@
-
-from nis import match
-
 def parse_id(game, lst): 
     game['home_team'] = lst[1][:3]
     game['date'] = lst[1][3:]
@@ -31,6 +28,8 @@ def parse_play(game,lst):
     play = [lst[1], cur_pitcher, lst[3], num_pitches, outcome]
     game['plays'].append(play)
 
+# Takes in path to EVX file and returns list of dicts. Each element in list is a game. Keys
+# and values are parsed based on functions above. plays are stored as a list of each play. 
 def parse_EVX(path): 
     all_games = []
     first = 1
@@ -57,7 +56,8 @@ def parse_EVX(path):
                     parse_play(cur_game, line)
     return all_games
 
-
+# Takes in path of retrosheet ids and returns dict with keys as ids and values as 
+# [lastName, firstName]
 def parse_names(path): 
     players = {}
     with open(path) as f: 

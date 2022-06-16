@@ -1,6 +1,8 @@
 from dataset_creation.parser import parse_EVX
+from dataset_creation.statistics import parse_stats
 from pprint import pprint
 
-path = './data/playbyplay/2019eve/2019ANA.EVA'
-games = parse_EVX(path)
-pprint(games[0])
+path = './data/pitcher_batter/pitcher_stats.csv'
+headers, batters = parse_stats(path, batter=False)
+pprint(batters)
+print(headers)
