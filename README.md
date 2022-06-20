@@ -21,3 +21,5 @@ To use this package:
 - Another issue is getting the current team roster. Need a system to get the up to date team roster which could depend on trades
 - Long term goals
   - implement other state of the art models and try to see if we can beat them
+- testing for the bharathan
+-
