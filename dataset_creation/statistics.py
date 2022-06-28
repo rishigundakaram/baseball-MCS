@@ -9,7 +9,7 @@ import pandas as pd
 # return a nested dictionary with: {year: {name of batter (lastName firstName): batter statistics}}
 def parse_id_map(path): 
     df = pd.read_csv(path)
-    df = df[['MLBID', 'RETROID']]
+    df = df[['MLBID', 'RETROID', '']]
     return df
 
 def parse_stats(path, id_map: pd.DataFrame, batter=True): 

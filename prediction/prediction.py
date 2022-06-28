@@ -9,7 +9,16 @@ model = baseball_MCS(None, None, None, transition)
 game_dataset = None
 player_database = None
 # for each game in the dataset: 
-statistics = DataFrame()
+columns = [
+    "mc_runs", 
+    "home_team", 
+    "away_team", 
+    "home_wr", 
+    "away_wr", 
+    "avg_run_differential", 
+    "var_run_differential"
+    ]
+statistics = DataFrame(columns=columns)
 for game in game_dataset:
     pitchers = None # query pitcher statistics using information from game
     batters = None # query batter statistics using information from game 
