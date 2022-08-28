@@ -20,3 +20,4 @@ To use this package:
 - Long term goals
   - implement other state of the art models and try to see if we can beat them
 - testing for the bharathan
+- Need to implement Manager class, and analysis of results
