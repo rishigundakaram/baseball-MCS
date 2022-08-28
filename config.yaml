@@ -1,0 +1,28 @@
+info: 
+  entity: rishigundakaram
+  log: False
+eval: 
+  start_date: 04/21/2020
+  roster_window: 4
+  train_window: 0
+  test_window: 0
+  periods: 1
+database: 
+  path: baseball.db
+model: 
+  MCS: 
+    regressor: 
+      path: None
+      type: NCF
+      train_period: all
+      finetune: None
+      layers: [64]
+      lr: 0.001
+      epochs: 100
+      batchsize: 32
+    simulator: 
+      path: None
+      train_period: all
+      factors: [bases, outs]
+      representation_base: full
+  

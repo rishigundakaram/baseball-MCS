@@ -37,8 +37,7 @@ def parse_EVX(path):
         for line in f: 
             line = line.strip('\n')
             line = line.split(',')
-            if len(line) == 0: 
-                break
+            
             match line[0]:
                 case 'id': 
                     if not first: 
