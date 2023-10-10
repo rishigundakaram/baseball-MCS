@@ -111,7 +111,7 @@ class BaseballGame:
         batting_order = self.away_batting_order
         while self.outs < 3:
             outcome = random.choices(
-                population=['strikeout', 'groundout', 'flyout', 'single', 'double', 'triple', 'homerun', 'walk'],
+                population=['strikeout', 'groundout', 'flyout', 'linedriveout', 'single', 'double', 'triple', 'homerun', 'walk'],
                 weights=self.transition_probs,
                 k=1
             )[0]
@@ -131,7 +131,7 @@ class BaseballGame:
         self.bases = [0, 0, 0]
         while self.outs < 3:
             outcome = random.choices(
-                population=['strikeout', 'groundout', 'flyout', 'single', 'double', 'triple', 'homerun', 'walk'],
+                population=['strikeout', 'groundout', 'flyout', 'single', 'double', 'triple', 'homerun', 'walk', 'linedriveout'],
                 weights=self.transition_probs,
                 k=1
             )[0]
@@ -399,12 +399,13 @@ def extract_dataframe(probabilities):
     team_data.sort(key=lambda x: x[1], reverse=True)
     team_data = pd.DataFrame(team_data, columns=columns)
     return team_data
+
 if __name__ == '__main__':
     transition_probs = [0.24, 0.37, 0.10, 0.05, 0.137, 0.04, 0.004, .079]
     schedule = parse_schedule_file("./data/schedule_2023.txt")
     team_rosters = get_all_team_rosters()
     full_season = FullSeason(transition_probs, team_rosters, schedule)
-    probabilities = full_season.play_full_season(num_seasons=1)
+    probabilities = full_season.play_full_season(num_seasons=100)
     team_data = extract_dataframe(probabilities)
     team_data.to_csv("./data/probabilities.csv")
 
