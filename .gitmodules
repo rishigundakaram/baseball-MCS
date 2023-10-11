@@ -1,3 +1,0 @@
-[submodule "retrosheet"]
-	path = retrosheet
-	url = https://github.com/calestini/retrosheet.git
