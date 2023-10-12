@@ -54,7 +54,6 @@ for epoch in range(num_epochs):
     train_loss = 0.0
     for i, (pitchers, batters, outcomes) in enumerate(train_dataloader):
         optimizer.zero_grad()
-        pitchers, batters, outcomes = pitchers.to(device), batters.to(device), outcomes.to(device)
         outputs = model(pitchers, batters)
         loss = criterion(outputs, outcomes)
         loss.backward()
