@@ -2,3 +2,5 @@ data/raw/*
 data/intermediate/*
 web/node_modules/*
 web/cache/*
+__pycache__
+.vscode
