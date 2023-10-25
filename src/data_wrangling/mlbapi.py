@@ -175,10 +175,30 @@ with open(TeamIDpath) as js:
     TeamIDmap = json.load(js)
 TeamIDmap = {int(k): v for k, v in TeamIDmap.items()}
 
-start_date = "2023-10-22"
-end_date = "2023-10-22"
-# Replace with the date you are interested in (format: 'YYYY-MM-DD')
-games = fetch_mlb_play_by_play(start_date, end_date, TeamIDmap, playerIDmap)
-pprint(games)
-# result = statsapi.get("game", {"gamePk": 748549})
-# print(result)
+start_date = "2023-10-01"
+end_date = "2023-10-01"
+all_games_path = "../../data/intermediate/all_games.json"
+
+with open(all_games_path, "r") as f:
+    all_games = json.load(f)
+
+# List of dictionaries [{'game_id': xxx, 'plays': []}]
+mlb_games = fetch_mlb_play_by_play(start_date, end_date, TeamIDmap, playerIDmap)
+
+all_gameids = set([game["game_id"] for game in all_games])
+mlb_gameid_dict = {game["game_id"]: game for game in mlb_games}
+
+# Update regular season games
+for game in all_games:
+    game_id = game["game_id"]
+    if game_id in mlb_gameid_dict:
+        # Update the dictionary
+        game.update(mlb_gameid_dict[game_id])
+
+# Append games that are in mlb_gameid_dict but not in all_games
+for game_id, game_data in mlb_gameid_dict.items():
+    if game_id not in all_gameids:
+        all_games.append(game_data)
+
+with open(all_games_path, "w+") as f:
+    json.dump(all_games, f)

@@ -1,30 +1,35 @@
 from pprint import pprint
 from collections import Counter
 import json
+import pandas as pd
+import os
 
 
 def parse_id(game, lst):
-    game["home_team"] = lst[1][:3]
-    game["date"] = lst[1][3:]
+    game["game_id"] = lst[1]
 
 
 def parse_info(game, lst):
-    game[lst[1]] = lst[2]
+    if lst[1] == "visteam":
+        game["away_team"] = lst[2]
+    elif lst[1] == "hometeam":
+        game["home_team"] = lst[2]
+    elif lst[1] == "date":
+        game["date"] = lst[2]
 
 
 def parse_start_sub(game, lst):
-    lst[5] = int(lst[5])
-    lst[3] = int(lst[3])
+    lst[5], lst[3], lst[4] = int(lst[5]), int(lst[3]), int(lst[4])
+    team_key = "away" if lst[3] == 0 else "home"
+
+    if lst[0] == "start":
+        if lst[4] != 0:
+            game[f"{team_key}_batting_order"][lst[4] - 1] = lst[1]
+        if lst[5] == 1:
+            game[f"{team_key}_sp"] = lst[1]
+
     if lst[5] == 1:
-        if lst[3] == 0:
-            game["cur_pitcher_visit"] = lst[1]
-        if lst[3] == 1:
-            game["cur_pitcher_home"] = lst[1]
-        if lst[0] == "start":
-            if lst[3] == 0:
-                game["visit_sp"] = lst[1]
-            if lst[3] == 1:
-                game["home_sp"] = lst[1]
+        game[f"cur_pitcher_{team_key}"] = lst[1]
 
 
 # Takes in path to EVX file and returns list of dicts. Each element in list is a game. Keys
@@ -40,11 +45,17 @@ def parse_EVX(path):
             match line[0]:
                 case "id":
                     if not first:
-                        del cur_game["cur_pitcher_vist"]
+                        del cur_game["cur_pitcher_away"]
                         del cur_game["cur_pitcher_home"]
                         all_games.append(cur_game)
                     first = 0
-                    cur_game = {"plays": []}
+                    cur_game = {
+                        "plays": [],
+                        "home_batting_order": [None for i in range(9)],
+                        "away_batting_order": [None for i in range(9)],
+                        "is_done": True,
+                        "regular_season": True,
+                    }
                     parse_id(cur_game, line)
                 case "info":
                     parse_info(cur_game, line)
@@ -86,7 +97,7 @@ def parse_outcome(outcome_code):
 def parse_play(game, lst):
     lst[2] = int(lst[2])
     lst[1] = int(lst[1])
-    cur_pitcher = game["cur_pitcher_home"] if lst[2] == 1 else game["cur_pitcher_visit"]
+    cur_pitcher = game["cur_pitcher_home"] if lst[2] == 1 else game["cur_pitcher_away"]
     num_pitches = -99 if lst[5] == "" else len(lst[5])
     outcome = parse_outcome(lst[6])
     play = {
@@ -161,10 +172,6 @@ def identify_unknown_codes(games):
     return unknown_codes
 
 
-import os
-import json
-
-
 def aggregate_EVX_files(root_directory):
     all_games = []
     for root, dirs, files in os.walk(root_directory):
@@ -176,7 +183,29 @@ def aggregate_EVX_files(root_directory):
     return all_games
 
 
-import pandas as pd
+def add_scores_to_games(all_games, gamelogs_dir):
+    blocks = []
+    for root, dirs, files in os.walk(gamelogs_dir):
+        for file in files:
+            if file.endswith(".txt"):
+                file_path = os.path.join(root, file)
+                blocks.append(pd.read_csv(file_path, header=None))
+    game_logs = pd.concat(blocks)
+
+    # switch columns where home team bats first
+    game_logs["game_id"] = (
+        game_logs[6].astype(str) + game_logs[0].astype(str) + game_logs[1].astype(str)
+    )
+
+    # map {game_id : [home_score, away_score]}
+    scores = zip(game_logs[10].astype(int), game_logs[9].astype(int))
+    run_mapping = dict(zip(game_logs["game_id"], scores))
+    all_games = [game for game in all_games if game["game_id"] in run_mapping]
+    for game in all_games:
+        game["home_score"] = run_mapping[game["game_id"]][0]
+        game["away_score"] = run_mapping[game["game_id"]][1]
+
+    return all_games
 
 
 def EVX_json_to_csv(path):
@@ -198,15 +227,19 @@ def EVX_json_to_csv(path):
 
 
 if __name__ == "__main__":
-    # root_directory = "../data/playbyplay"  # Replace with your actual root directory
-    # all_games = aggregate_EVX_files(root_directory)
-    # analyze_outcomes(all_games)
+    playbyplay_directory = (
+        "../../data/raw/playbyplay"  # Replace with your actual root directory
+    )
+    gamelogs_directory = "../../data/raw/gamelogs"
+    output_path = "../../data/intermediate/all_games.json"
+    all_games = aggregate_EVX_files(playbyplay_directory)
+    print(f"found {len(all_games)} games")
+    all_games = add_scores_to_games(all_games, gamelogs_directory)
+    print(f"scores for {len(all_games)}")
+    # # analyze_outcomes(all_games)
 
-    # # Save the object as a JSON file
-    # with open('all_games.json', 'w') as f:
-    #     json.dump(all_games, f)
-    # EVX_json_to_csv('./all_games.json')
-    f = open("../../data/intermediate/all_games.json")
-    games = json.load(f)
-    print(games[0].keys())
-    print(games[0]["home_team"])
+    # # # Save the object as a JSON file
+    with open(output_path, "w+") as f:
+        json.dump(all_games, f)
+    with open(output_path, "r+") as f:
+        test_games = json.load(f)
