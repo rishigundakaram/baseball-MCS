@@ -1,96 +1,63 @@
 import statsapi
-
-mlb_team_mapping = {
-    110: "BAL",
-    111: "BOS",
-    147: "NYY",
-    139: "TBR",
-    141: "TOR",
-    145: "CWS",
-    114: "CLE",
-    116: "DET",
-    118: "KCR",
-    142: "MIN",
-    117: "HOU",
-    108: "LAA",
-    133: "OAK",
-    136: "SEA",
-    140: "TEX",
-    144: "ATL",
-    146: "MIA",
-    121: "NYM",
-    143: "PHI",
-    120: "WSN",
-    112: "CHC",
-    113: "CIN",
-    158: "MIL",
-    134: "PIT",
-    138: "STL",
-    109: "ARI",
-    115: "COL",
-    119: "LAD",
-    135: "SD",
-    137: "SF",
-}
+from alive_progress import alive_bar
 
 
 def fetch_mlb_play_by_play(start_date, end_date, TeamIDmap, PlayerIDmap):
     # Get the list of games on the specified date
     schedule = statsapi.schedule(start_date=start_date, end_date=end_date, sportId=1)
 
-    # Initialize an empty dictionary to store play-by-play data
-    all_games_play_by_play = {}
-
     # Loop through each game to fetch the play-by-play data
     games = []
-    for game in schedule:
-        cur_game = {}
+    num_games = len(schedule)
+    with alive_bar(num_games) as bar:
+        for game in schedule:
+            cur_game = {}
 
-        # cur_game["game_id"] = game["game_id"]
-        cur_game["away_team"] = TeamIDmap[game["away_id"]]
-        cur_game["home_team"] = TeamIDmap[game["home_id"]]
+            # cur_game["game_id"] = game["game_id"]
+            cur_game["away_team"] = TeamIDmap[game["away_id"]]
+            cur_game["home_team"] = TeamIDmap[game["home_id"]]
 
-        cur_game["regular_season"] = True if game["game_type"] == "R" else False
-        cur_game["is_done"] = True if game["status"] == "Final" else False
-        cur_game["home_score"] = game["home_score"]
-        cur_game["away_score"] = game["away_score"]
-        cur_game["plays"] = []
+            cur_game["regular_season"] = True if game["game_type"] == "R" else False
+            cur_game["is_done"] = True if game["status"] == "Final" else False
+            cur_game["home_score"] = game["home_score"]
+            cur_game["away_score"] = game["away_score"]
+            cur_game["plays"] = []
 
-        # assemble retrosheet id
-        game_date = game["game_date"]
-        game_num = str(game["game_num"] - 1)
-        year = str(game_date[:4])
-        month = str(game_date[5:7])
-        day = str(game_date[8:10])
-        cur_game["game_id"] = cur_game["home_team"] + year + month + day + game_num
-        cur_game["game_date"] = f"{year}/{month}/{day}"
-        game_id = game["game_id"]
-        # get the batting orders and starting pitchers for the game
-        game_info = statsapi.get("game", {"gamePk": 748549})
-        cur_game["home_sp"] = PlayerIDmap[
-            game_info["gameData"]["probablePitchers"]["home"]["id"]
-        ]
-        cur_game["away_sp"] = PlayerIDmap[
-            game_info["gameData"]["probablePitchers"]["away"]["id"]
-        ]
+            # assemble retrosheet id
+            game_date = game["game_date"]
+            game_num = str(game["game_num"] - 1)
+            year = str(game_date[:4])
+            month = str(game_date[5:7])
+            day = str(game_date[8:10])
+            cur_game["game_id"] = cur_game["home_team"] + year + month + day + game_num
+            cur_game["game_date"] = f"{year}/{month}/{day}"
+            game_id = game["game_id"]
+            # get the batting orders and starting pitchers for the game
+            game_info = statsapi.get("game", {"gamePk": 748549})
+            cur_game["home_sp"] = PlayerIDmap[
+                game_info["gameData"]["probablePitchers"]["home"]["id"]
+            ]
+            cur_game["away_sp"] = PlayerIDmap[
+                game_info["gameData"]["probablePitchers"]["away"]["id"]
+            ]
 
-        boxscore_data = statsapi.get("game_boxscore", {"gamePk": game_id})
-        cur_game["home_batting_order"] = [
-            PlayerIDmap[i] for i in boxscore_data["teams"]["home"]["battingOrder"]
-        ]
-        cur_game["away_batting_order"] = [
-            PlayerIDmap[i] for i in boxscore_data["teams"]["away"]["battingOrder"]
-        ]
+            boxscore_data = statsapi.get("game_boxscore", {"gamePk": game_id})
+            cur_game["home_batting_order"] = [
+                PlayerIDmap[i] for i in boxscore_data["teams"]["home"]["battingOrder"]
+            ]
+            cur_game["away_batting_order"] = [
+                PlayerIDmap[i] for i in boxscore_data["teams"]["away"]["battingOrder"]
+            ]
 
-        # get the play by play data for the game
-        play_by_play_data = statsapi.get("game_playByPlay", {"gamePk": game_id})
-        for play in play_by_play_data["allPlays"]:
-            parse_play(play, cur_game, PlayerIDmap)
+            # get the play by play data for the game
+            play_by_play_data = statsapi.get("game_playByPlay", {"gamePk": game_id})
+            for play in play_by_play_data["allPlays"]:
+                parse_play(play, cur_game, PlayerIDmap)
 
-        # Add the play-by-play data to the dictionary, using the game ID as the key
-        games.append(cur_game)
-
-    return games
+            # Add the play-by-play data to the dictionary, using the game ID as the key
+            games.append(cur_game)
+            bar()
+        return games
 
 
 def parse_play(play, cur_game, PlayerIDmap):
@@ -175,8 +142,8 @@ with open(TeamIDpath) as js:
     TeamIDmap = json.load(js)
 TeamIDmap = {int(k): v for k, v in TeamIDmap.items()}
 
-start_date = "2023-10-01"
-end_date = "2023-10-01"
+start_date = "2023-03-30"
+end_date = "2023-10-22"
 all_games_path = "../../data/intermediate/all_games.json"
 
 with open(all_games_path, "r") as f:
@@ -184,7 +151,7 @@ with open(all_games_path, "r") as f:
 
 # List of dictionaries [{'game_id': xxx, 'plays': []}]
 mlb_games = fetch_mlb_play_by_play(start_date, end_date, TeamIDmap, playerIDmap)
-
+print("fetched from mlbapi")
 all_gameids = set([game["game_id"] for game in all_games])
 mlb_gameid_dict = {game["game_id"]: game for game in mlb_games}
 
@@ -194,11 +161,11 @@ for game in all_games:
     if game_id in mlb_gameid_dict:
         # Update the dictionary
         game.update(mlb_gameid_dict[game_id])
-
+print("updated existing games")
 # Append games that are in mlb_gameid_dict but not in all_games
 for game_id, game_data in mlb_gameid_dict.items():
     if game_id not in all_gameids:
         all_games.append(game_data)
-
+print("added new games")
 with open(all_games_path, "w+") as f:
     json.dump(all_games, f)

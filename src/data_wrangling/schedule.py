@@ -24,7 +24,6 @@ if __name__ == "__main__":
     schedule["game_id"] = (
         schedule[6].astype(str) + schedule[0].astype(str) + schedule[1].astype(str)
     )
-    print(schedule.head())
     scheduled_games = dict(
         zip(schedule["game_id"], zip(schedule[0].astype(str), schedule[6], schedule[3]))
     )
