@@ -8,7 +8,9 @@ import pandas as pd
 # team_rosters = get_all_team_rosters()
 # full_season = FullSeason(transition_probs, team_rosters, schedule)
 # probabilities = full_season.play_full_season(num_seasons=100)
-probabilities = pd.read_csv("../../data/final/probabilities.csv")
+probabilities = pd.read_csv(
+    "https://raw.githubusercontent.com/rishigundakaram/baseball-MCS/main/data/final/probabilities.csv"
+)
 
 st.title("MLB World Series Predictions")
 
