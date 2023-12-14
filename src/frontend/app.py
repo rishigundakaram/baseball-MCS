@@ -8,16 +8,49 @@ import pandas as pd
 # team_rosters = get_all_team_rosters()
 # full_season = FullSeason(transition_probs, team_rosters, schedule)
 # probabilities = full_season.play_full_season(num_seasons=100)
-probabilities = pd.read_csv(
-    "https://raw.githubusercontent.com/rishigundakaram/baseball-MCS/main/data/final/probabilities.csv"
-)
 
-st.title("MLB World Series Predictions")
 
-st.header("World Series, Division Win, and Playoff Probabilities")
+def custom_style():
+    st.markdown(
+        """
+        <style>
+        .dataframe-widget .stDataFrame {
+            width: 100%;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
-st.write(
-    "Here are the probabilities for each team to win the World Series, win their division, and make the playoffs, as well as their average number of wins:"
-)
 
-st.dataframe(probabilities)
+def main():
+    st.set_page_config(
+        page_title="MLB Forecasting", page_icon=":baseball", layout="wide"
+    )
+    st.sidebar.title("Navigation")
+    page = st.sidebar.selectbox("Choose a page", ["Predictions", "Model Info"])
+
+    if page == "Predictions":
+        custom_style()
+        probabilities = pd.read_csv(
+            "https://raw.githubusercontent.com/rishigundakaram/baseball-MCS/main/data/final/probabilities.csv"
+        )
+        probabilities = probabilities.drop(probabilities.columns[0], axis=1)
+
+        st.title("2024 MLB Season Predictions")
+
+        st.header("World Series, Division Win, and Playoff Probabilities")
+
+        st.write(
+            "Here are the probabilities for each team to win the World Series, win their division, and make the playoffs, as well as their average number of wins:"
+        )
+
+        st.dataframe(probabilities, hide_index=True)
+
+    elif page == "Model Info":
+        st.title("About the Model")
+        st.write("A Blog post about the model")
+
+
+if __name__ == "__main__":
+    main()

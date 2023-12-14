@@ -99,106 +99,120 @@ team_abbrev_to_enum = {
 class BaseballGame:
     def __init__(
         self,
-        TransitionModel,
-        home_team,
-        away_team,
+        game,
+        to_sim=False,
     ):
-        self.TransitionModel = TransitionModel
-        # require home and away teams to be Rosters of players
-        self.home_team = home_team
-        self.away_team = away_team
+        self.home_team = game["home_team"]
+        self.away_team = game["away_team"]
+        self.date = game["date"]
+        self.home_batting_order = game["home_batting_order"]
+        self.away_batting_order = game["away_batting_order"]
         self.inning = 1
         self.outs = 0
+        self.home_batting_position = 0
+        self.away_batting_position = 0
+        self.bases = [0, 0, 0]
         self.home_score = 0
         self.away_score = 0
-        self.bases = [0, 0, 0]
-        self.home_batting_order = 0
-        self.away_batting_order = 0
-        self.home_sp = 
+        self.home_sp = game["home_sp"]
+        self.away_sp = game["away_sp"]
+        if not to_sim:
+            self.done = True
+            self.home_score = game["home_score"]
+            self.away_score = game["away_score"]
 
-    def simulate_inning(self):
+    def reset(self):
+        self.done = False
+        self.home_score = 0
+        self.away_score = 0
+        self.inning = 1
         self.outs = 0
-        self.bases = [0, 0, 0]
-        batting_order = self.away_batting_order
-        while self.outs < 3:
-            pitcher = 
-            outcome = self.TransitionModel.sample()
+        self.home_batting_position = 0
+        self.away_batting_position = 0
 
-            if outcome == "strikeout" or outcome == "groundout" or outcome == "flyout":
-                self.outs += 1
-            else:
-                (
-                    self.bases[0],
-                    self.bases[1],
-                    self.bases[2],
-                    outs,
-                    runs,
-                ) = self.update_bases(outcome)
-                self.outs += outs
-                self.away_score += runs
+    # def simulate_inning(self):
+    #     self.outs = 0
+    #     self.bases = [0, 0, 0]
+    #     batting_order = self.away_batting_order
+    #     while self.outs < 3:
+    #         pitcher = self.away_sp
+    #         outcome = self.TransitionModel.sample()
 
-            batting_order = (batting_order + 1) % len(self.away_team)
-        self.away_batting_order = batting_order
+    #         if outcome == "strikeout" or outcome == "groundout" or outcome == "flyout":
+    #             self.outs += 1
+    #         else:
+    #             (
+    #                 self.bases[0],
+    #                 self.bases[1],
+    #                 self.bases[2],
+    #                 outs,
+    #                 runs,
+    #             ) = self.update_bases(outcome)
+    #             self.outs += outs
+    #             self.away_score += runs
 
-        batting_order = self.home_batting_order
-        self.outs = 0
-        self.bases = [0, 0, 0]
-        while self.outs < 3:
-            outcome = 
+    #         batting_order = (batting_order + 1) % len(self.away_team)
+    #     self.away_batting_order = batting_order
 
-            if outcome == "strikeout" or outcome == "groundout" or outcome == "flyout":
-                self.outs += 1
-            else:
-                (
-                    self.bases[0],
-                    self.bases[1],
-                    self.bases[2],
-                    outs,
-                    runs,
-                ) = self.update_bases(outcome)
-                self.outs += outs
-                self.home_score += runs
+    #     batting_order = self.home_batting_order
+    #     self.outs = 0
+    #     self.bases = [0, 0, 0]
+    #     while self.outs < 3:
+    #         outcome =
 
-            batting_order = (batting_order + 1) % len(self.home_team)
-        self.home_batting_order = batting_order
+    #         if outcome == "strikeout" or outcome == "groundout" or outcome == "flyout":
+    #             self.outs += 1
+    #         else:
+    #             (
+    #                 self.bases[0],
+    #                 self.bases[1],
+    #                 self.bases[2],
+    #                 outs,
+    #                 runs,
+    #             ) = self.update_bases(outcome)
+    #             self.outs += outs
+    #             self.home_score += runs
 
-    def update_bases(self, outcome):
-        outs = 0
-        runs = 0
-        bases = self.bases
-        if outcome == "single":
-            if bases[2] == 1:
-                runs += 1
-            bases[0] = 1
-            bases[1] = self.bases[0]
-            bases[2] = bases[1]
-        elif outcome == "double":
-            if bases[2] == 1:
-                runs += 1
-            if bases[1] == 1:
-                runs += 1
-            bases[0] = 0
-            bases[1] = 1
-            bases[2] = bases[1]
-        elif outcome == "triple":
-            if bases[2] == 1:
-                runs += 1
-            if bases[1] == 1:
-                runs += 1
-            if bases[0] == 1:
-                runs += 1
-            bases[2] = 1
-        elif outcome == "homerun":
-            runs += sum(bases)
-            bases = [0, 0, 0]
-        return *bases, outs, runs
+    #         batting_order = (batting_order + 1) % len(self.home_team)
+    #     self.home_batting_order = batting_order
 
-    def play(self):
-        while self.inning <= 9 or (
-            self.inning > 9 and self.home_score == self.away_score
-        ):
-            self.simulate_inning()
-            self.inning += 1
+    # def update_bases(self, outcome):
+    #     outs = 0
+    #     runs = 0
+    #     bases = self.bases
+    #     if outcome == "single":
+    #         if bases[2] == 1:
+    #             runs += 1
+    #         bases[0] = 1
+    #         bases[1] = self.bases[0]
+    #         bases[2] = bases[1]
+    #     elif outcome == "double":
+    #         if bases[2] == 1:
+    #             runs += 1
+    #         if bases[1] == 1:
+    #             runs += 1
+    #         bases[0] = 0
+    #         bases[1] = 1
+    #         bases[2] = bases[1]
+    #     elif outcome == "triple":
+    #         if bases[2] == 1:
+    #             runs += 1
+    #         if bases[1] == 1:
+    #             runs += 1
+    #         if bases[0] == 1:
+    #             runs += 1
+    #         bases[2] = 1
+    #     elif outcome == "homerun":
+    #         runs += sum(bases)
+    #         bases = [0, 0, 0]
+    #     return *bases, outs, runs
+
+    # def play(self):
+    #     while self.inning <= 9 or (
+    #         self.inning > 9 and self.home_score == self.away_score
+    #     ):
+    #         self.simulate_inning()
+    #         self.inning += 1
 
 
 from collections import defaultdict
@@ -390,39 +404,6 @@ class FullSeason:
             data["avg_games_won"] = data["total_games_won"] / num_seasons
 
         return results
-
-    def get_playoff_teams(self, standings):
-        division_winners = {
-            League.AMERICAN_LEAGUE: [],
-            League.NATIONAL_LEAGUE: [],
-        }
-        wildcards = {
-            League.AMERICAN_LEAGUE: [],
-            League.NATIONAL_LEAGUE: [],
-        }
-
-        for league in standings:
-            all_teams = []
-            for division in standings[league]:
-                # Sort teams in division by wins (descending)
-                sorted_teams = sorted(
-                    standings[league][division].items(),
-                    key=lambda x: x[1]["wins"],
-                    reverse=True,
-                )
-                # Get division winner
-                division_winner = sorted_teams[0]
-                division_winners[league].append(division_winner)
-
-                # Add other teams to the list for wildcards
-                all_teams.extend(sorted_teams[1:])
-
-            # Sort all_teams by wins (descending) and get the top three teams as wildcards
-            all_teams_sorted = sorted(
-                all_teams, key=lambda x: x[1]["wins"], reverse=True
-            )
-            wildcards[league] = all_teams_sorted[:3]
-        return division_winners, wildcards
 
 
 from parsers import parse_schedule_file, get_team_roster

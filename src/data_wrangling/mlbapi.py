@@ -24,13 +24,13 @@ def fetch_mlb_play_by_play(start_date, end_date, TeamIDmap, PlayerIDmap):
             cur_game["plays"] = []
 
             # assemble retrosheet id
-            game_date = game["game_date"]
+            date = game["game_date"]
             game_num = str(game["game_num"] - 1)
-            year = str(game_date[:4])
-            month = str(game_date[5:7])
-            day = str(game_date[8:10])
+            year = str(date[:4])
+            month = str(date[5:7])
+            day = str(date[8:10])
             cur_game["game_id"] = cur_game["home_team"] + year + month + day + game_num
-            cur_game["game_date"] = f"{year}/{month}/{day}"
+            cur_game["date"] = f"{year}/{month}/{day}"
             game_id = game["game_id"]
             # get the batting orders and starting pitchers for the game
             game_info = statsapi.get("game", {"gamePk": 748549})
@@ -143,7 +143,7 @@ with open(TeamIDpath) as js:
 TeamIDmap = {int(k): v for k, v in TeamIDmap.items()}
 
 start_date = "2023-03-30"
-end_date = "2023-10-22"
+end_date = "2023-04-03"
 all_games_path = "../../data/intermediate/all_games.json"
 
 with open(all_games_path, "r") as f:
