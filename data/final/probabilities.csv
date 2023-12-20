@@ -1,31 +1,31 @@
-,,Team,League,Avg Wins,Avg Losses,Make Playoffs %,Win Division %,Win World Series %
-0,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/BAL.png&h=60,Orioles,AL East,90,72,100.0,0.0,0.0
-1,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/BOS.png&h=60,Red Sox,AL East,81,81,0.0,0.0,0.0
-2,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/NYY.png&h=60,Yankees,AL East,95,67,100.0,100.0,0.0
-3,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/tb.png&h=60,Rays,AL East,91,71,100.0,0.0,0.0
-4,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/TOR.png&h=60,Blue Jays,AL East,85,77,100.0,0.0,0.0
-5,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CHW.png&h=60,White Sox,AL Central,66,96,0.0,0.0,0.0
-6,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CLE.png&h=60,Guardians,AL Central,86,76,100.0,100.0,0.0
-7,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/DET.png&h=60,Tigers,AL Central,79,83,0.0,0.0,0.0
-8,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/KC.png&h=60,Royals,AL Central,64,98,0.0,0.0,0.0
-9,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/MIN.png&h=60,Twins,AL Central,84,78,0.0,0.0,0.0
-10,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/HOU.png&h=60,Astros,AL West,81,81,0.0,0.0,0.0
+,logo,Team,League,Avg Wins,Avg Losses,Make Playoffs %,Win Division %,Win World Series %
+0,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/BAL.png&h=60,Orioles,AL East,86,76,100.0,0.0,0.0
+1,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/BOS.png&h=60,Red Sox,AL East,82,80,0.0,0.0,0.0
+2,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/NYY.png&h=60,Yankees,AL East,88,74,100.0,0.0,0.0
+3,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/tb.png&h=60,Rays,AL East,95,67,100.0,100.0,0.0
+4,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/TOR.png&h=60,Blue Jays,AL East,81,81,0.0,0.0,0.0
+5,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CHW.png&h=60,White Sox,AL Central,70,92,0.0,0.0,0.0
+6,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CLE.png&h=60,Guardians,AL Central,71,91,0.0,0.0,0.0
+7,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/DET.png&h=60,Tigers,AL Central,85,77,100.0,100.0,100.0
+8,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/KC.png&h=60,Royals,AL Central,65,97,0.0,0.0,0.0
+9,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/MIN.png&h=60,Twins,AL Central,72,90,0.0,0.0,0.0
+10,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/HOU.png&h=60,Astros,AL West,89,73,100.0,100.0,0.0
 11,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/LAA.png&h=60,Angels,AL West,84,78,0.0,0.0,0.0
-12,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/OAK.png&h=60,Athletics,AL West,69,93,0.0,0.0,0.0
-13,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/SEA.png&h=60,Mariners,AL West,82,80,0.0,0.0,0.0
-14,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/TEX.png&h=60,Rangers,AL West,93,69,100.0,100.0,0.0
-15,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/ATL.png&h=60,Braves,NL East,81,81,0.0,0.0,0.0
-16,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/MIA.png&h=60,Marlins,NL East,91,71,100.0,100.0,0.0
-17,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/NYM.png&h=60,Mets,NL East,80,82,0.0,0.0,0.0
-18,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/PHI.png&h=60,Phillies,NL East,78,84,0.0,0.0,0.0
-19,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/WSH.png&h=60,Nationals,NL East,75,87,0.0,0.0,0.0
-20,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CHC.png&h=60,Cubs,NL Central,72,90,0.0,0.0,0.0
-21,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CIN.png&h=60,Reds,NL Central,83,79,100.0,0.0,0.0
-22,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/MIL.png&h=60,Brewers,NL Central,83,79,100.0,100.0,0.0
-23,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/PIT.png&h=60,Pirates,NL Central,74,88,0.0,0.0,0.0
-24,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/STL.png&h=60,Cardinals,NL Central,83,79,100.0,0.0,0.0
-25,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/ARI.png&h=60,Diamondbacks,NL West,90,72,100.0,100.0,100.0
-26,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/COL.png&h=60,Rockies,NL West,71,91,0.0,0.0,0.0
-27,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/LAD.png&h=60,Dodgers,NL West,79,83,0.0,0.0,0.0
-28,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/SD.png&h=60,Padres,NL West,86,76,100.0,0.0,0.0
-29,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/SF.png&h=60,Giants,NL West,74,88,0.0,0.0,0.0
+12,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/OAK.png&h=60,Athletics,AL West,67,95,0.0,0.0,0.0
+13,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/SEA.png&h=60,Mariners,AL West,86,76,100.0,0.0,0.0
+14,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/TEX.png&h=60,Rangers,AL West,81,81,0.0,0.0,0.0
+15,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/ATL.png&h=60,Braves,NL East,89,73,100.0,0.0,0.0
+16,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/MIA.png&h=60,Marlins,NL East,86,76,100.0,0.0,0.0
+17,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/NYM.png&h=60,Mets,NL East,84,78,100.0,0.0,0.0
+18,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/PHI.png&h=60,Phillies,NL East,91,71,100.0,100.0,0.0
+19,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/WSH.png&h=60,Nationals,NL East,80,82,0.0,0.0,0.0
+20,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CHC.png&h=60,Cubs,NL Central,76,86,0.0,0.0,0.0
+21,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/CIN.png&h=60,Reds,NL Central,70,92,0.0,0.0,0.0
+22,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/MIL.png&h=60,Brewers,NL Central,87,75,100.0,100.0,0.0
+23,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/PIT.png&h=60,Pirates,NL Central,83,79,0.0,0.0,0.0
+24,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/STL.png&h=60,Cardinals,NL Central,78,84,0.0,0.0,0.0
+25,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/ARI.png&h=60,Diamondbacks,NL West,77,85,0.0,0.0,0.0
+26,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/COL.png&h=60,Rockies,NL West,75,87,0.0,0.0,0.0
+27,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/LAD.png&h=60,Dodgers,NL West,87,75,100.0,100.0,0.0
+28,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/SD.png&h=60,Padres,NL West,82,80,0.0,0.0,0.0
+29,https://a.espncdn.com/combiner/i?img=/i/teamlogos/mlb/500/scoreboard/SF.png&h=60,Giants,NL West,83,79,0.0,0.0,0.0
