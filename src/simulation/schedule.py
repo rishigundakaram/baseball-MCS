@@ -3,42 +3,9 @@ from game import BaseballGame
 from collections import defaultdict
 from datetime import datetime, timedelta
 from collections import deque
-
-MLBTeams = {
-    "BAL": {"league": "AL", "division": "E"},
-    "BOS": {"league": "AL", "division": "E"},
-    "NYA": {"league": "AL", "division": "E"},
-    "TBA": {"league": "AL", "division": "E"},
-    "TOR": {"league": "AL", "division": "E"},
-    "CHA": {"league": "AL", "division": "C"},
-    "CLE": {"league": "AL", "division": "C"},
-    "DET": {"league": "AL", "division": "C"},
-    "KCA": {"league": "AL", "division": "C"},
-    "MIN": {"league": "AL", "division": "C"},
-    "HOU": {"league": "AL", "division": "W"},
-    "ANA": {"league": "AL", "division": "W"},
-    "OAK": {"league": "AL", "division": "W"},
-    "SEA": {"league": "AL", "division": "W"},
-    "TEX": {"league": "AL", "division": "W"},
-    "ATL": {"league": "NL", "division": "E"},
-    "MIA": {"league": "NL", "division": "E"},
-    "NYN": {"league": "NL", "division": "E"},
-    "PHI": {"league": "NL", "division": "E"},
-    "WAS": {"league": "NL", "division": "E"},
-    "FLO": {"league": "NL", "division": "E"},
-    "CHN": {"league": "NL", "division": "C"},
-    "CIN": {"league": "NL", "division": "C"},
-    "MIL": {"league": "NL", "division": "C"},
-    "PIT": {"league": "NL", "division": "C"},
-    "SLN": {"league": "NL", "division": "C"},
-    "ARI": {"league": "NL", "division": "W"},
-    "COL": {"league": "NL", "division": "W"},
-    "LAN": {"league": "NL", "division": "W"},
-    "SDN": {"league": "NL", "division": "W"},
-    "SFN": {"league": "NL", "division": "W"},
-}
-
-
+from stats import Analyzer
+from static import MLBTeams
+from alive_progress import alive_bar
 from collections import defaultdict
 
 
@@ -389,7 +356,7 @@ class FullSeason:
                 "away_batting_order": away_batting_order,
                 "home_sp": home_sp,
                 "away_sp": away_sp,
-                "date": date.strft  ime("%Y/%m/%d"),
+                "date": date.strftime("%Y/%m/%d"),
             }
             game = self.simulator.sim(BaseballGame(game, to_sim=True))
             if game.home_score > game.away_score:
@@ -443,12 +410,19 @@ class Schedule:
         for season in self.seasons:
             season.prep()
 
-    def sim(self, n=1):
+    def sim(
+        self,
+        analyzer,
+        n=1,
+    ):
         self.prep()
-        for i in range(n):
-            self.seasons[-1].reset()
-            standings, seeds, outcome = self.seasons[-1].sim()
-        return standings, seeds, outcome
+        with alive_bar(n) as bar:
+            for i in range(n):
+                self.seasons[-1].reset()
+                standings, seeds, outcome = self.seasons[-1].sim()
+                analyzer.update(standings, seeds, outcome)
+                bar()
+        return analyzer
 
 
 from sim import RandomSimulator
@@ -456,11 +430,12 @@ from pprint import pprint
 
 if __name__ == "__main__":
     all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
-    data_stop_date = "2023/05/21"
+    data_stop_date = "2023/04/01"
     simulator = RandomSimulator()
     schedule = Schedule(all_games_path, data_stop_date, simulator)
-    standings, seeds, outcome = schedule.sim(n=1)
-    standings = standings.combine_standings()
-    pprint(standings)
-    pprint(seeds)
-    pprint(outcome)
+    n = 1000
+    analyzer = Analyzer(n=n)
+    analyzer = schedule.sim(analyzer, n=n)
+    out = analyzer.export()
+    out.to_csv("/home/projects/baseball-MCS/data/final/temp_probabilities.csv")
+    print(out)
