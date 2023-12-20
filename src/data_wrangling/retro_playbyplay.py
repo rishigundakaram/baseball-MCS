@@ -3,6 +3,7 @@ from collections import Counter
 import json
 import pandas as pd
 import os
+import numpy as np
 
 
 def parse_id(game, lst):
@@ -65,6 +66,9 @@ def parse_EVX(path):
                     parse_start_sub(cur_game, line)
                 case "play":
                     parse_play(cur_game, line)
+    del cur_game["cur_pitcher_away"]
+    del cur_game["cur_pitcher_home"]
+    all_games.append(cur_game)
     return all_games
 
 
@@ -193,10 +197,15 @@ def add_scores_to_games(all_games, gamelogs_dir):
     game_logs = pd.concat(blocks)
 
     # switch columns where home team bats first
-    game_logs["game_id"] = (
-        game_logs[6].astype(str) + game_logs[0].astype(str) + game_logs[1].astype(str)
+    game_logs["game_id"] = np.where(
+        game_logs.iloc[:, 159] == "HTBF",  # Condition
+        game_logs[3].astype(str)
+        + game_logs[0].astype(str)
+        + game_logs[1].astype(str),  # True case
+        game_logs[6].astype(str)
+        + game_logs[0].astype(str)
+        + game_logs[1].astype(str),  # False case
     )
-
     # map {game_id : [home_score, away_score]}
     scores = zip(game_logs[10].astype(int), game_logs[9].astype(int))
     run_mapping = dict(zip(game_logs["game_id"], scores))
@@ -227,11 +236,9 @@ def EVX_json_to_csv(path):
 
 
 if __name__ == "__main__":
-    playbyplay_directory = (
-        "../../data/raw/playbyplay"  # Replace with your actual root directory
-    )
-    gamelogs_directory = "../../data/raw/gamelogs"
-    output_path = "../../data/intermediate/all_games.json"
+    playbyplay_directory = "/home/projects/baseball-MCS/data/raw/playbyplay"  # Replace with your actual root directory
+    gamelogs_directory = "/home/projects/baseball-MCS/data/raw/gamelogs"
+    output_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
     all_games = aggregate_EVX_files(playbyplay_directory)
     print(f"found {len(all_games)} games")
     all_games = add_scores_to_games(all_games, gamelogs_directory)

@@ -1,8 +1,9 @@
 import json
 from pprint import pprint
 import unittest
+from retro_playbyplay import parse_EVX, add_scores_to_games
 
-all_games_path = "../../data/intermediate/all_games.json"
+all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
 
 with open(all_games_path, "r") as f:
     all_games = json.load(f)
@@ -40,16 +41,40 @@ def import_quality(all_games):
     print("passed import quality")
 
 
+class TestParseEVX(unittest.TestCase):
+    def test_num_games(self):
+        all_games_path = "/home/projects/baseball-MCS/data/test/test.EVA"
+        all_games = parse_EVX(all_games_path)
+        self.assertEqual(len(all_games), 3)
+
+    def test_2011(self):
+        all_games_path = (
+            "/home/projects/baseball-MCS/data/raw/playbyplay/2011eve/2011FLO.EVN"
+        )
+        all_games = parse_EVX(all_games_path)
+        self.assertEqual(len(all_games), 81)
+
+    def test_htbf(self):
+        all_games_path = "/home/projects/baseball-MCS/data/test/htbf.EVA"
+        gamelogs_dir = "/home/projects/baseball-MCS/data/test/gamelogs"
+        all_games = parse_EVX(all_games_path)
+        self.assertEqual(len(all_games), 1)
+        all_games = add_scores_to_games(all_games, gamelogs_dir)
+        self.assertEqual(len(all_games), 1)
+        self.assertIn("home_score", all_games[0].keys())
+        self.assertIn("away_score", all_games[0].keys())
+
+
 class TestDataStructure(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         # This is called once before all tests in this class
-        all_games_path = "../../data/intermediate/all_games.json"
+        all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
         with open(all_games_path, "r") as f:
             self.all_games = json.load(f)
 
         mlb_to_retro_TeamID_map_path = (
-            "../../data/intermediate/mlb_to_retro_TeamID_map.json"
+            "/home/projects/baseball-MCS/data/intermediate/mlb_to_retro_TeamID_map.json"
         )
         with open(mlb_to_retro_TeamID_map_path, "r") as f:
             self.team_map = json.load(f)
@@ -93,6 +118,24 @@ class TestDataStructure(unittest.TestCase):
             assert (
                 game["home_team"] in team_names and game["away_team"] in team_names
             ), f'gameID: {game["game_id"]}, teams: {game["home_team"], game["away_team"]}'
+
+    def test_year_game_counts(self):
+        team_names = set(self.team_map.values())
+        years = {i: {team: 0 for team in team_names} for i in range(2011, 2024)}
+
+        for game in self.all_games:
+            date = int(game["date"][:4])
+            home_team = game["home_team"]
+            away_team = game["away_team"]
+            years[date][home_team] += 1
+            years[date][away_team] += 1
+
+        for year in years:
+            for val in years[year].values():
+                if val == 0 or year == 2020 or val >= 160:
+                    continue
+                pprint(years)
+                assert False
 
 
 if __name__ == "__main__":

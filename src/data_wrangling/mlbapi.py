@@ -142,7 +142,7 @@ with open(TeamIDpath) as js:
     TeamIDmap = json.load(js)
 TeamIDmap = {int(k): v for k, v in TeamIDmap.items()}
 
-start_date = "2023-03-30"
+start_date = "2023-04-03"
 end_date = "2023-04-03"
 all_games_path = "../../data/intermediate/all_games.json"
 
