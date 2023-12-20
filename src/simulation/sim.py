@@ -28,8 +28,8 @@ class Simulator:
     def train(self, game) -> None:
         return None
 
-    def sim(self, game) -> None:
-        return None
+    def sim(self, game) -> BaseballGame:
+        return game
 
 
 class RandomSimulator(Simulator):
@@ -40,3 +40,4 @@ class RandomSimulator(Simulator):
             away_score = randint(0, 10)
         game.away_score = away_score
         game.done = True
+        return game

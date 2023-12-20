@@ -104,7 +104,7 @@ class TestSchedule(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         # Mock data for MLBTeams
-        all_games_path = "baseball-MCS/data/intermediate/all_games.json"
+        all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
         data_stop_date = "2023/05/21"
         simulator = RandomSimulator()
         self.schedule = Schedule(all_games_path, data_stop_date, simulator)
@@ -116,6 +116,21 @@ class TestSchedule(unittest.TestCase):
 
             for game in season.reg_season_to_sim:
                 self.assertIsInstance(game, BaseballGame)
+
+    def test_sim(self):
+        standings, seeds, outcome = self.schedule.sim(n=1)
+        for game in self.schedule.seasons[-1].reg_season_to_sim:
+            self.assertTrue(game.done)
+
+    def test_num_games(self):
+        self.assertGreaterEqual(len(self.schedule.seasons[-1]), 2420)
+        standings, seeds, outcome = self.schedule.sim(n=1)
+        combined_standings = standings.combine_standings()
+        for league in ["AL", "NL"]:
+            for division in ["E", "W", "C"]:
+                self.assertEqual(len(combined_standings[league][division]), 5)
+                for team, wl in combined_standings[league][division].items():
+                    self.assertGreaterEqual(wl["losses"] + wl["wins"], 160)
 
 
 if __name__ == "__main__":

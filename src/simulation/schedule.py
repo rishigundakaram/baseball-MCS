@@ -1,7 +1,7 @@
 import json
 from game import BaseballGame
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import deque
 
 MLBTeams = {
@@ -258,6 +258,11 @@ class Standings:
     def reset(self):
         self.standings_sim = self.init_standings()
 
+    def __str__(self) -> str:
+        combined_standings = self.combine_standings()
+        print(combined_standings)
+        return f"standings: str(combined_standings)"
+
 
 # TODO: add in support for mid-post season play
 class FullSeason:
@@ -270,6 +275,9 @@ class FullSeason:
         self.simulator = simulator
         self.standings = Standings()
         pass
+
+    def __len__(self):
+        return len(self.reg_season_complete) + len(self.reg_season_to_sim)
 
     def add_game(self, game, before_cuttoff=True) -> None:
         if game["regular_season"] and before_cuttoff:
@@ -316,14 +324,15 @@ class FullSeason:
 
     def sim_postseason(self, seeds, start_date):
         # first round series
+        start_date = datetime.strptime(start_date, "%Y/%m/%d")
         nl_wildcard_winner = self.play_series(
             seeds["NL"][4], seeds["NL"][5], 3, start_date
         )
         nl_third_seed_winner = self.play_series(
             seeds["NL"][3], seeds["NL"][6], 3, start_date
         )
-        diff = datetime.timedelta(days=7)
-        start_date = datetime.strptime(start_date, "%Y/%m/%d") + diff
+        diff = timedelta(days=7)
+        start_date = start_date + diff
 
         al_wildcard_winner = self.play_series(
             seeds["AL"][4], seeds["AL"][5], 3, start_date
@@ -331,8 +340,8 @@ class FullSeason:
         al_third_seed_winner = self.play_series(
             seeds["AL"][3], seeds["AL"][6], 3, start_date
         )
-        diff = datetime.timedelta(days=7)
-        start_date = datetime.strptime(start_date, "%Y/%m/%d") + diff
+        diff = timedelta(days=7)
+        start_date = start_date + diff
 
         # second round series
         nl_div_series_1 = self.play_series(
@@ -341,8 +350,8 @@ class FullSeason:
         nl_div_series_2 = self.play_series(
             seeds["NL"][1], nl_wildcard_winner, 5, start_date
         )
-        diff = datetime.timedelta(days=7)
-        start_date = datetime.strptime(start_date, "%Y/%m/%d") + diff
+        diff = timedelta(days=7)
+        start_date = start_date + diff
 
         al_div_series_1 = self.play_series(
             seeds["AL"][2], al_third_seed_winner, 5, start_date
@@ -350,17 +359,19 @@ class FullSeason:
         al_div_series_2 = self.play_series(
             seeds["AL"][1], al_wildcard_winner, 5, start_date
         )
-        diff = datetime.timedelta(days=7)
-        start_date = datetime.strptime(start_date, "%Y/%m/%d") + diff
+        diff = timedelta(days=7)
+        start_date = start_date + diff
 
         # Championship Series
         nl_champion = self.play_series(nl_div_series_1, nl_div_series_2, 7, start_date)
         al_champion = self.play_series(al_div_series_1, al_div_series_2, 7, start_date)
-        diff = datetime.timedelta(days=7)
-        start_date = datetime.strptime(start_date, "%Y/%m/%d") + diff
+        diff = timedelta(days=7)
+        start_date = start_date + diff
 
         # World Series
-        world_series_champion = self.play_series(nl_champion, al_champion, 7)
+        world_series_champion = self.play_series(
+            nl_champion, al_champion, 7, start_date
+        )
         return world_series_champion
 
     def play_series(self, home, away, num_games, start_date):
@@ -369,8 +380,8 @@ class FullSeason:
         while home_wins < num_games // 2 + 1 and away_wins < num_games // 2 + 1:
             home_batting_order, home_sp = self.LatestGameData.get(home)
             away_batting_order, away_sp = self.LatestGameData.get(away)
-            diff = datetime.timedelta(days=sum(home_wins + away_wins) + 1)
-            date = datetime.strptime(start_date, "%Y/%m/%d") + diff
+            diff = timedelta(days=home_wins + away_wins + 1)
+            date = start_date + diff
             game = {
                 "home_team": home,
                 "away_team": away,
@@ -378,7 +389,7 @@ class FullSeason:
                 "away_batting_order": away_batting_order,
                 "home_sp": home_sp,
                 "away_sp": away_sp,
-                "date": date,
+                "date": date.strft  ime("%Y/%m/%d"),
             }
             game = self.simulator.sim(BaseballGame(game, to_sim=True))
             if game.home_score > game.away_score:
@@ -394,6 +405,7 @@ class FullSeason:
 class Schedule:
     def __init__(self, all_games_path, data_stop_date, simulator) -> None:
         data_stop_date = datetime.strptime(data_stop_date, "%Y/%m/%d")
+
         with open(all_games_path, "r") as f:
             all_games = json.load(f)
         self.latest_game_data = LatestGameData()
@@ -402,6 +414,7 @@ class Schedule:
         # add all games to correct SeasonBlocks
         for game in all_games:
             date = datetime.strptime(game["date"], "%Y/%m/%d")
+
             year = date.year
             is_complete = date < data_stop_date
 
@@ -433,16 +446,21 @@ class Schedule:
     def sim(self, n=1):
         self.prep()
         for i in range(n):
-            standings, seeds, outcome = self.seasons[-1].sim()
             self.seasons[-1].reset()
+            standings, seeds, outcome = self.seasons[-1].sim()
         return standings, seeds, outcome
 
 
 from sim import RandomSimulator
+from pprint import pprint
 
 if __name__ == "__main__":
-    all_games_path = "baseball-MCS/data/intermediate/all_games.json"
+    all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
     data_stop_date = "2023/05/21"
     simulator = RandomSimulator()
     schedule = Schedule(all_games_path, data_stop_date, simulator)
-    schedule.sim(n=1)
+    standings, seeds, outcome = schedule.sim(n=1)
+    standings = standings.combine_standings()
+    pprint(standings)
+    pprint(seeds)
+    pprint(outcome)
