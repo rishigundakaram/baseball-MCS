@@ -23,6 +23,18 @@ def custom_style():
     )
 
 
+def color_red_gradient(val):
+    """
+    Takes a scalar and returns a string with
+    the css property `'color: red'` proportional to the value.
+    """
+    red = int(255 * val / 100)
+    return f"color: rgb({red}, 0, 0)"
+
+
+# Apply the styling
+
+
 def main():
     st.set_page_config(
         page_title="MLB Forecasting", page_icon=":baseball", layout="wide"
@@ -36,7 +48,12 @@ def main():
             "https://raw.githubusercontent.com/rishigundakaram/baseball-MCS/main/data/final/probabilities.csv"
         )
         probabilities = probabilities.drop(probabilities.columns[0], axis=1)
+        # probabilities = probabilities.style.applymap(
+        #     color_red_gradient,
+        #     subset=["Make Playoffs %", "Win Division %", "Win World Series %"],
+        # )
 
+        print(probabilities)
         st.title("2024 MLB Season Predictions")
 
         st.header("World Series, Division Win, and Playoff Probabilities")
@@ -45,7 +62,11 @@ def main():
             "Here are the probabilities for each team to win the World Series, win their division, and make the playoffs, as well as their average number of wins:"
         )
 
-        st.dataframe(probabilities, hide_index=True)
+        st.dataframe(
+            probabilities,
+            hide_index=True,
+            column_config={"logo": st.column_config.ImageColumn(label="")},
+        )
 
     elif page == "Model Info":
         st.title("About the Model")
