@@ -357,6 +357,8 @@ class FullSeason:
                 "home_sp": home_sp,
                 "away_sp": away_sp,
                 "date": date.strftime("%Y/%m/%d"),
+                "home_score": 0,
+                "away_score": 0,
             }
             game = self.simulator.sim(BaseballGame(game, to_sim=True))
             if game.home_score > game.away_score:
@@ -421,17 +423,18 @@ class Schedule:
         return analyzer
 
 
-from sim import RandomSimulator
+from sim import RandomSimulator, EloSimulator
 from pprint import pprint
 
 if __name__ == "__main__":
     all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
-    data_stop_date = "2023/04/01"
-    simulator = RandomSimulator()
+    data_stop_date = "2023/08/01"
+    simulator = EloSimulator(k_factor=5, home_advantage=0)
     schedule = Schedule(all_games_path, data_stop_date, simulator)
     n = 1000
     analyzer = Analyzer(n=n)
     analyzer = schedule.sim(analyzer, n=n)
-    out = analyzer.export()
-    out.to_csv("/home/projects/baseball-MCS/data/final/temp_probabilities.csv")
+    out = analyzer.export(simulator)
+    out.data_stop_date = data_stop_date
+    out.to_csv("/home/projects/baseball-MCS/data/final/probabilities.csv")
     print(out)

@@ -108,8 +108,12 @@ class Analyzer:
             i += 1
         return df
 
-    def export(self):
+    def export(self, elo_simulator=None):
         df = self.print()
+        for team in MLBTeams:
+            MLBTeams[team]["Elo"] = elo_simulator.get_elo(team)
+            MLBTeams[team]["Current Elo"] = round(MLBTeams[team]["Elo"][-1])
+
         team_info_df = pd.DataFrame.from_dict(MLBTeams, orient="index")
         df = df.merge(team_info_df, left_on="Team", right_index=True)
 
@@ -120,6 +124,8 @@ class Analyzer:
                 "logo",
                 "team_name",
                 "league",
+                "Elo",
+                "Current Elo",
                 "Avg Wins",
                 "Avg Losses",
                 "Make Playoffs %",

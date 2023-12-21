@@ -47,6 +47,9 @@ def main():
         probabilities = pd.read_csv(
             "https://raw.githubusercontent.com/rishigundakaram/baseball-MCS/main/data/final/probabilities.csv"
         )
+        # probabilities = pd.read_csv(
+        #     "/home/projects/baseball-MCS/data/final/probabilities.csv"
+        # )
         probabilities = probabilities.drop(probabilities.columns[0], axis=1)
         # probabilities = probabilities.style.applymap(
         #     color_red_gradient,
@@ -65,7 +68,10 @@ def main():
         st.dataframe(
             probabilities,
             hide_index=True,
-            column_config={"logo": st.column_config.ImageColumn(label="")},
+            column_config={
+                "logo": st.column_config.ImageColumn(label=""),
+                "Elo": st.column_config.LineChartColumn(label="Elo"),
+            },
         )
 
     elif page == "Model Info":
