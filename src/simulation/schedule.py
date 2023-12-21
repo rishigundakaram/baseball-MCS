@@ -410,11 +410,7 @@ class Schedule:
         for season in self.seasons:
             season.prep()
 
-    def sim(
-        self,
-        analyzer,
-        n=1,
-    ):
+    def sim(self, analyzer, n=1):
         self.prep()
         with alive_bar(n) as bar:
             for i in range(n):

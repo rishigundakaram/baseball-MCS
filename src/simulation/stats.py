@@ -129,3 +129,8 @@ class Analyzer:
         ]
         df = df.rename(columns={"team_name": "Team", "league": "League"})
         return df
+
+
+class Loss:
+    def __init__(self) -> None:
+        pass
