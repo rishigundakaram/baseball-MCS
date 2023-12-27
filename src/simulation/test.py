@@ -101,42 +101,42 @@ class TestStandings(unittest.TestCase):
     #     # More assertions based on the expected state after reset
 
 
-# class TestSchedule(unittest.TestCase):
-#     @classmethod
-#     def setUpClass(self):
-#         # Mock data for MLBTeams
-#         all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
-#         data_stop_date = "2023/05/21"
-#         simulator = RandomSimulator()
+class TestSchedule(unittest.TestCase):
+    @classmethod
+    def setUpClass(self):
+        # Mock data for MLBTeams
+        all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
+        data_stop_date = "2023/03/15"
+        simulator = RandomSimulator()
 
-#         self.schedule = Schedule(all_games_path, data_stop_date, simulator)
+        self.schedule = Schedule(all_games_path, data_stop_date, simulator)
 
-#     def test_data_types(self):
-#         for season in self.schedule.seasons:
-#             for game in season.reg_season_complete:
-#                 self.assertIsInstance(game, BaseballGame)
+    def test_data_types(self):
+        for season in self.schedule.seasons:
+            for game in season.reg_season_complete:
+                self.assertIsInstance(game, BaseballGame)
 
-#             for game in season.reg_season_to_sim:
-#                 self.assertIsInstance(game, BaseballGame)
+            for game in season.reg_season_to_sim:
+                self.assertIsInstance(game, BaseballGame)
 
-#     def test_sim(self):
-#         n = 1
-#         analyzer = Analyzer(n=n)
-#         standings, seeds, outcome = self.schedule.sim(analyzer, n=n)
-#         for game in self.schedule.seasons[-1].reg_season_to_sim:
-#             self.assertTrue(game.done)
+    def test_sim(self):
+        n = 1
+        analyzer = Analyzer(n=n)
+        standings, seeds, outcome = self.schedule.sim(analyzer, n=n)
+        for game in self.schedule.seasons[-1].reg_season_to_sim:
+            self.assertTrue(game.done)
 
-#     def test_num_games(self):
-#         self.assertGreaterEqual(len(self.schedule.seasons[-1]), 2420)
-#         n = 1
-#         analyzer = Analyzer(n=n)
-#         standings, seeds, outcome = self.schedule.sim(analyzer, n=n)
-#         combined_standings = standings.combine_standings()
-#         for league in ["AL", "NL"]:
-#             for division in ["E", "W", "C"]:
-#                 self.assertEqual(len(combined_standings[league][division]), 5)
-#                 for team, wl in combined_standings[league][division].items():
-#                     self.assertGreaterEqual(wl["losses"] + wl["wins"], 160)
+    def test_num_games(self):
+        self.assertGreaterEqual(len(self.schedule.seasons[-1]), 2420)
+        n = 1
+        analyzer = Analyzer(n=n)
+        standings, seeds, outcome = self.schedule.sim(analyzer, n=n)
+        combined_standings = standings.combine_standings()
+        for league in ["AL", "NL"]:
+            for division in ["E", "W", "C"]:
+                self.assertEqual(len(combined_standings[league][division]), 5)
+                for team, wl in combined_standings[league][division].items():
+                    self.assertGreaterEqual(wl["losses"] + wl["wins"], 160)
 
 
 class TestElo(unittest.TestCase):

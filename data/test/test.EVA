@@ -1,0 +1,519 @@
+id,ANA201104080
+version,2
+info,visteam,TOR
+info,hometeam,ANA
+info,site,ANA01
+info,date,2011/04/08
+info,number,0
+info,starttime,7:07PM
+info,daynight,night
+info,usedh,true
+info,umphome,davib902
+info,ump1b,wendh902
+info,ump2b,knigb901
+info,ump3b,laynj901
+info,howscored,park
+info,pitches,pitches
+info,oscorer,munse701
+info,temp,54
+info,winddir,tocf
+info,windspeed,9
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,155
+info,attendance,43853
+info,wp,doteo001
+info,lp,sante001
+info,save,raucj001
+start,davir003,"Rajai Davis",0,1,8
+start,nixj001,"Jayson Nix",0,2,5
+start,bautj002,"Jose Bautista",0,3,9
+start,linda001,"Adam Lind",0,4,3
+start,hilla001,"Aaron Hill",0,5,4
+start,rivej001,"Juan Rivera",0,6,10
+start,snidt001,"Travis Snider",0,7,7
+start,molij001,"Jose Molina",0,8,2
+start,mcdoj003,"John McDonald",0,9,6
+start,drabk001,"Kyle Drabek",0,0,1
+start,iztum001,"Maicer Izturis",1,1,6
+start,kendh001,"Howard Kendrick",1,2,4
+start,abreb001,"Bobby Abreu",1,3,10
+start,huntt001,"Torii Hunter",1,4,9
+start,wellv001,"Vernon Wells",1,5,7
+start,calla001,"Alberto Callaspo",1,6,5
+start,trumm001,"Mark Trumbo",1,7,3
+start,congh001,"Hank Conger",1,8,2
+start,bourp001,"Peter Bourjos",1,9,8
+start,sante001,"Ervin Santana",1,0,1
+play,1,0,davir003,12,FBSX,9/F
+play,1,0,nix-j001,00,X,9/F
+play,1,0,bautj002,12,CBCS,K
+play,1,1,iztum001,31,CBBBB,W
+play,1,1,kendh001,22,BCSBS,K
+play,1,1,abreb001,21,CBB1>S,CS2(26)
+play,1,1,abreb001,32,CBB1>S.FBFB,W
+play,1,1,huntt001,02,CCX,S9/L.1-H(E9/TH)(UR)(NR);B-3
+play,1,1,wellv001,10,BX,63/G
+play,2,0,linda001,22,CBBFX,3/L-
+play,2,0,hilla001,12,BFCX,7/F
+play,2,0,rivej001,22,FBCBFX,63/G
+play,2,1,calla001,32,CBBSBB,W
+play,2,1,trumm001,00,X,54(1)3/GDP
+play,2,1,congh001,12,CBSC,K
+play,3,0,snidt001,00,X,8/F
+play,3,0,molij001,12,BCSX,8/F
+play,3,0,mcdoj003,12,CBFS,K
+play,3,1,bourp001,02,CSX,53/G
+play,3,1,iztum001,32,BBBCCFB,W
+play,3,1,kendh001,02,CCX,S9/L.1-2
+play,3,1,abreb001,32,BF*BFB>X,8/F
+play,3,1,huntt001,00,X,S9/G.2-H;1-3(THH)
+play,3,1,wellv001,22,B1F1FF1B>S,K
+play,4,0,davir003,21,BTBX,8/F
+play,4,0,nix-j001,22,CBBFC,K
+play,4,0,bautj002,01,SX,8/F
+play,4,1,calla001,00,X,3/G
+play,4,1,trumm001,12,CSBX,D7/G+
+play,4,1,congh001,21,B*BSX,4/P
+play,4,1,bourp001,10,BX,9/F
+play,5,0,linda001,00,X,8/F
+play,5,0,hilla001,11,BCX,S7/F
+play,5,0,rivej001,01,CN,BK.1-2
+play,5,0,rivej001,12,CN.SBS,K
+play,5,0,snidt001,32,*BS>FBF*BB,W
+play,5,0,molij001,11,CBX,63/G
+play,5,1,iztum001,32,BFFBFBX,D8/L
+play,5,1,kendh001,22,FBBFX,S1/G+.2-2
+play,5,1,abreb001,32,CBBFBFS,K
+play,5,1,huntt001,12,CBFX,4/P-
+play,5,1,wellv001,02,FCS,K
+play,6,0,mcdoj003,00,X,S7/L
+play,6,0,davir003,02,MCX,9/F
+play,6,0,nix-j001,01,1CX,7/F
+play,6,0,bautj002,01,CX,S7/L.1-3
+play,6,0,linda001,00,X,D8/F.3-H;1-H
+play,6,0,hilla001,22,CSB*BC,K
+play,6,1,calla001,10,BX,8/F
+play,6,1,trumm001,01,CX,9/F
+play,6,1,congh001,01,FX,6/P
+play,7,0,rivej001,00,X,S67/L
+play,7,0,snidt001,32,CB+1F*B*BFF>X,46(1)3/GDP
+play,7,0,molij001,01,FX,7/F
+play,7,1,bourp001,00,,NP
+sub,doteo001,"Octavio Dotel",0,0,1
+play,7,1,bourp001,02,.CCS,K
+play,7,1,iztum001,02,CFX,63/G
+play,7,1,kendh001,02,CFFS,K
+play,8,0,mcdoj003,00,X,53/G
+play,8,0,davir003,02,CCS,K
+play,8,0,nix-j001,20,BBX,HR/7/F
+play,8,0,bautj002,22,BFS*BC,K
+play,8,1,abreb001,00,,NP
+sub,purcd001,"David Purcey",0,0,1
+play,8,1,abreb001,32,.BCFBBB,W
+play,8,1,huntt001,00,,NP
+sub,camps002,"Shawn Camp",0,0,1
+play,8,1,huntt001,00,.X,64(1)3/GDP
+play,8,1,wellv001,10,BX,9/F
+play,9,0,linda001,00,,NP
+sub,rodnf001,"Fernando Rodney",1,0,1
+play,9,0,linda001,10,.BX,6/P
+play,9,0,hilla001,21,CBBX,63/G
+play,9,0,rivej001,21,BBFX,S7/F-
+play,9,0,snidt001,00,,NP
+sub,mccom001,"Mike McCoy",0,6,12
+play,9,0,snidt001,00,.11>C,SB2
+play,9,0,snidt001,12,.11>C.CBX,3/G
+play,9,1,calla001,00,,NP
+sub,raucj001,"Jon Rauch",0,0,1
+play,9,1,calla001,22,..BCBCFX,53/G
+play,9,1,trumm001,11,BSX,8/F
+play,9,1,congh001,12,CBFFX,S8/F-
+play,9,1,bourp001,00,,NP
+sub,pettc001,"Chris Pettit",1,8,12
+play,9,1,bourp001,12,.B1CSS,K
+data,er,drabk001,1
+data,er,doteo001,0
+data,er,purcd001,0
+data,er,camps002,0
+data,er,raucj001,0
+data,er,sante001,3
+data,er,rodnf001,0
+id,ANA201104090
+version,2
+info,visteam,TOR
+info,hometeam,ANA
+info,site,ANA01
+info,date,2011/04/09
+info,number,0
+info,starttime,6:07PM
+info,daynight,night
+info,usedh,true
+info,umphome,wendh902
+info,ump1b,knigb901
+info,ump2b,laynj901
+info,ump3b,davib902
+info,howscored,park
+info,pitches,pitches
+info,oscorer,munse701
+info,temp,56
+info,winddir,tocf
+info,windspeed,11
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,unknown
+info,timeofgame,303
+info,attendance,43513
+info,wp,hared001
+info,lp,raucj001
+info,save,
+start,davir003,"Rajai Davis",0,1,8
+start,hilla001,"Aaron Hill",0,2,4
+start,bautj002,"Jose Bautista",0,3,9
+start,linda001,"Adam Lind",0,4,3
+start,rivej001,"Juan Rivera",0,5,10
+start,arenj001,"J.P. Arencibia",0,6,2
+start,snidt001,"Travis Snider",0,7,7
+start,encae001,"Edwin Encarnacion",0,8,5
+start,mcdoj003,"John McDonald",0,9,6
+start,cecib001,"Brett Cecil",0,0,1
+start,iztum001,"Maicer Izturis",1,1,6
+start,kendh001,"Howard Kendrick",1,2,4
+start,abreb001,"Bobby Abreu",1,3,10
+start,huntt001,"Torii Hunter",1,4,9
+start,wellv001,"Vernon Wells",1,5,7
+start,calla001,"Alberto Callaspo",1,6,5
+start,trumm001,"Mark Trumbo",1,7,3
+start,mathj001,"Jeff Mathis",1,8,2
+start,bourp001,"Peter Bourjos",1,9,8
+start,palmm001,"Matt Palmer",1,0,1
+play,1,0,davir003,12,CFBFX,43/G
+play,1,0,hilla001,22,BCBCX,9/F
+play,1,0,bautj002,32,BCBBFX,S8/G
+play,1,0,linda001,12,CS+1B+1,PO1(23)
+play,1,1,iztum001,01,CX,43/G
+play,1,1,kendh001,02,CCX,HR/8/F
+play,1,1,abreb001,21,BBFX,S9/L
+play,1,1,huntt001,11,*BCX,64(1)3/GDP
+play,2,0,linda001,00,X,S9/F
+play,2,0,rivej001,22,CBF1*BS,K
+play,2,0,arenj001,00,X,D9/L.1-3
+play,2,0,snidt001,11,CBX,63/G.3-H;2-3
+play,2,0,encae001,00,X,63/G
+play,2,1,wellv001,31,BBBCB,W
+play,2,1,calla001,00,X,46(1)3/GDP
+play,2,1,trumm001,32,BBFFBS,K23
+play,3,0,mcdoj003,00,X,S1/BG
+play,3,0,davir003,01,CX,E6/G.1-2
+play,3,0,hilla001,01,FX,6/P/IF
+play,3,0,bautj002,32,B*BBFC*B,W.2-3;1-2
+play,3,0,linda001,00,X,7/SF/F.3-H(UR)
+play,3,0,rivej001,00,X,64(1)/FO/G
+play,3,1,mathj001,10,BX,S7/L.B-2(E7)
+play,3,1,bourp001,11,LB+2X,34/SH/BG.2-3
+play,3,1,iztum001,32,BB*BCFFFX,D7/L.3-H
+play,3,1,kendh001,12,CFBX,63/G.2-3
+play,3,1,abreb001,21,BFBX,S5/P.3-H
+play,3,1,huntt001,02,11FF1X,S7/G.1-2
+play,3,1,wellv001,01,FX,S9/F.2-H;1X3(95)
+play,4,0,arenj001,22,FFBBS,K
+play,4,0,snidt001,11,FBX,7/L
+play,4,0,encae001,21,BBCX,S7/L
+play,4,0,mcdoj003,20,1BBX,D7/L.1-3
+play,4,0,davir003,10,BX,S8/G.3-H;2-H;B-2(THH)
+play,4,0,hilla001,01,2CX,S7/L.2-H;B-2(THH)
+play,4,0,bautj002,00,X,S7/G.2XH(72)
+play,4,1,calla001,32,BCBFBX,S8/L
+play,4,1,trumm001,12,BFF1X,S9/L-.1-3
+play,4,1,mathj001,02,CFFFS,K
+play,4,1,bourp001,00,1X,7/SF/F.3-H;1-2(THH)
+play,4,1,iztum001,10,BX,43/G-
+play,5,0,linda001,10,BX,4!3/G
+play,5,0,rivej001,01,CX,4/P-
+play,5,0,arenj001,11,CBX,T8/L
+play,5,0,snidt001,00,,NP
+sub,thomr006,"Rich Thompson",1,0,1
+play,5,0,snidt001,21,.BS*BX,9/F
+play,5,1,kendh001,01,CX,S9/L
+play,5,1,abreb001,11,B1>FX,7/F
+play,5,1,huntt001,22,CB+1FFB1S,K
+play,5,1,wellv001,10,*BX,54(1)/FO/G
+play,6,0,encae001,22,CFBBX,8/F
+play,6,0,mcdoj003,01,CX,S7/G
+play,6,0,davir003,02,1CFX,7/F
+play,6,0,hilla001,02,CF1,POCS2(1E3).1-2
+play,6,0,hilla001,02,CF1.FX,8/F
+play,6,1,calla001,00,,NP
+sub,villc001,"Carlos Villanueva",0,0,1
+play,6,1,calla001,31,.BBFBX,3/G
+play,6,1,trumm001,02,CCC,K
+play,6,1,mathj001,12,SSBS,K
+play,7,0,bautj002,00,,NP
+sub,jepsk001,"Kevin Jepsen",1,0,1
+play,7,0,bautj002,32,.BBCSFBFB,W
+play,7,0,linda001,00,B,WP.1-2
+play,7,0,linda001,12,B.CFB,WP.2-3
+play,7,0,linda001,22,B.CFB.S,K
+play,7,0,rivej001,10,*BX,63/G
+play,7,0,arenj001,00,,NP
+sub,takah001,"Hisanori Takahashi",1,0,1
+play,7,0,arenj001,30,.IIII,IW
+play,7,0,snidt001,32,C*BBBF>X,9/F
+play,7,1,bourp001,32,BCFBBB,W
+play,7,1,iztum001,12,11C1BC1S,K
+play,7,1,kendh001,22,11*BBCS1>X,64(1)3/GDP
+play,8,0,encae001,00,,NP
+sub,rodnf001,"Fernando Rodney",1,0,1
+play,8,0,encae001,00,.X,8/F
+play,8,0,mcdoj003,01,CX,53/G
+play,8,0,davir003,11,FBX,4/P
+play,8,1,abreb001,00,,NP
+sub,rzepm001,"Marc Rzepczynski",0,0,1
+play,8,1,abreb001,32,.BCSBBS,K
+play,8,1,huntt001,10,BX,9/L
+play,8,1,wellv001,11,BSX,63/G
+play,9,0,hilla001,00,,NP
+sub,waldj001,"Jordan Walden",1,0,1
+play,9,0,hilla001,32,.BFFBFBX,63/G
+play,9,0,bautj002,32,BCFBBX,E5/G
+play,9,0,linda001,32,B>F*B1BCX,7/F
+play,9,0,rivej001,22,F1CB1*BX,S46/G.1-2
+play,9,0,arenj001,00,,NP
+sub,mccom001,"Mike McCoy",0,5,12
+play,9,0,arenj001,00,.X,53/G
+play,9,1,calla001,11,.CBX,4/P
+play,9,1,trumm001,10,BX,9/F
+play,9,1,mathj001,01,SX,8/F
+play,10,0,snidt001,00,,NP
+sub,kohnm001,"Michael Kohn",1,0,1
+play,10,0,snidt001,01,.SH,HP
+play,10,0,encae001,01,CX,7/F
+play,10,0,mcdoj003,10,1B>S,SB2
+play,10,0,mcdoj003,32,1B>S.*BSBFFB,W
+play,10,0,davir003,12,FFFBFS,K
+play,10,0,hilla001,02,CFX,2/P2F
+play,10,1,bourp001,00,,NP
+sub,frasj002,"Jason Frasor",0,0,1
+play,10,1,bourp001,12,.BFCFS,K
+play,10,1,iztum001,12,BFCFFS,K
+play,10,1,kendh001,00,X,163/G
+play,11,0,bautj002,32,FBBBFFB,W
+play,11,0,linda001,12,C1F*B1>X,13/G.1-2
+play,11,0,mccom001,22,BFFFBC,K
+play,11,0,arenj001,00,,NP
+sub,bulgj001,"Jason Bulger",1,0,1
+play,11,0,arenj001,11,.SBX,3/P3F
+play,11,1,abreb001,32,BCBCFBFX,E5/TH/G
+play,11,1,huntt001,00,,NP
+sub,doteo001,"Octavio Dotel",0,0,1
+play,11,1,huntt001,11,.B1S>X,S9/L-.1-3
+play,11,1,wellv001,01,F>S,DI.1-2
+play,11,1,wellv001,02,F>S.FS,K
+play,11,1,calla001,30,IIII,IW
+play,11,1,trumm001,00,,NP
+sub,congh001,"Hank Conger",1,7,11
+play,11,1,congh001,01,.CX,42(3)/FO/G.2-3;1-2
+play,11,1,mathj001,32,BFFFFBB>S,K
+play,12,0,snidt001,00,,NP
+sub,woodb003,"Brandon Wood",1,7,3
+play,12,0,snidt001,32,.BBBCCFB,W
+play,12,0,encae001,21,C+1PB>S,SB2
+play,12,0,encae001,22,C+1PB>S.C,K
+play,12,0,mcdoj003,32,CF*BFBBB,W
+play,12,0,davir003,00,X,53/BG.2-3;1-2
+play,12,0,hilla001,32,BCCBFBB,W
+play,12,0,bautj002,32,CFBBFB>F>F>X,8/F
+play,12,1,bourp001,00,,NP
+sub,camps002,"Shawn Camp",0,0,1
+play,12,1,bourp001,12,.BFCX,13/G
+play,12,1,iztum001,01,CX,S9/L-
+play,12,1,kendh001,11,1BCX,64(1)3/GDP
+play,13,0,linda001,10,BX,S9/G
+play,13,0,mccom001,00,,NP
+sub,escoy001,"Yunel Escobar",0,5,11
+play,13,0,escoy001,31,.BBBCB,W.1-2
+play,13,0,arenj001,12,BCLS,K
+play,13,0,snidt001,02,CCX,31/G.2-3;1-2
+play,13,0,encae001,01,CX,FC5/G/RINT.2X3(5)
+com,"$on the slow roller on the grass to the left of 3B Alberto Callaspo, he had to wait for"
+com,"Yunel Escobar, who was running towards third; when Callaspo's throw was wide at first,"
+com,"Escobar was called out for runner interference and thus the apparent run did not count"
+play,13,1,abreb001,00,,NP
+sub,nix-j001,"Jayson Nix",0,8,5
+play,13,1,abreb001,02,..CTX,S8/L
+play,13,1,huntt001,01,CX,S7/G.1-3
+play,13,1,wellv001,00,>X,7/FDP.1X1(763)
+com,"$Torii Hunter ran on the pitch; LF Travis Snider made a sliding catch in shallow LF"
+com,"and threw the ball into the infield; Hunter stood on 2B and never ran back to 1B and"
+com,"was doubled off first"
+play,13,1,calla001,30,IIII,IW
+play,13,1,woodb003,00,1,CSH(142)
+com,"$Pitcher Shawn Camp tried the 'fake to third, turn to first' move and caught Alberto Callaspo"
+com,"off first; when Camp threw the ball to second, Bobby Abreu ran towards home and was out by a"
+com,"few steps"
+play,14,0,mcdoj003,00,,NP
+sub,hared001,"Dan Haren",1,0,1
+play,14,0,mcdoj003,01,.CX,63/G
+play,14,0,davir003,22,FBBSFFX,5/P5F
+play,14,0,hilla001,02,CCFS,K
+play,14,1,woodb003,00,,NP
+sub,raucj001,"Jon Rauch",0,0,1
+play,14,1,woodb003,12,.FFFBS,K23
+play,14,1,mathj001,22,CBFBFFS,K
+play,14,1,bourp001,01,FX,D7/L
+play,14,1,iztum001,02,CCX,S9/L-.2-H
+data,er,cecib001,5
+data,er,villc001,0
+data,er,rzepm001,0
+data,er,frasj002,0
+data,er,doteo001,0
+data,er,camps002,0
+data,er,raucj001,1
+data,er,palmm001,4
+data,er,thomr006,0
+data,er,jepsk001,0
+data,er,takah001,0
+data,er,rodnf001,0
+data,er,waldj001,0
+data,er,kohnm001,0
+data,er,bulgj001,0
+data,er,hared001,0
+id,ANA201104100
+version,2
+info,visteam,TOR
+info,hometeam,ANA
+info,site,ANA01
+info,date,2011/04/10
+info,number,0
+info,starttime,12:36PM
+info,daynight,day
+info,usedh,true
+info,umphome,knigb901
+info,ump1b,laynj901
+info,ump2b,davib902
+info,ump3b,wendh902
+info,howscored,park
+info,pitches,pitches
+info,oscorer,munse701
+info,temp,62
+info,winddir,torf
+info,windspeed,5
+info,fieldcond,unknown
+info,precip,unknown
+info,sky,sunny
+info,timeofgame,168
+info,attendance,43525
+info,wp,weavj003
+info,lp,reyej003
+info,save,rodnf001
+start,davir003,"Rajai Davis",0,1,8
+start,escoy001,"Yunel Escobar",0,2,6
+start,bautj002,"Jose Bautista",0,3,9
+start,linda001,"Adam Lind",0,4,3
+start,hilla001,"Aaron Hill",0,5,4
+start,rivej001,"Juan Rivera",0,6,10
+start,snidt001,"Travis Snider",0,7,7
+start,nix-j001,"Jayson Nix",0,8,5
+start,molij001,"Jose Molina",0,9,2
+start,reyej003,"Jo-Jo Reyes",0,0,1
+start,bourp001,"Peter Bourjos",1,1,8
+start,kendh001,"Howard Kendrick",1,2,4
+start,abreb001,"Bobby Abreu",1,3,9
+start,huntt001,"Torii Hunter",1,4,10
+start,wellv001,"Vernon Wells",1,5,7
+start,calla001,"Alberto Callaspo",1,6,5
+start,trumm001,"Mark Trumbo",1,7,3
+start,wilsb002,"Bobby Wilson",1,8,2
+start,woodb003,"Brandon Wood",1,9,6
+start,weavj003,"Jered Weaver",1,0,1
+play,1,0,davir003,22,CSBBS,K
+play,1,0,escoy001,22,BCBSC,K
+play,1,0,bautj002,31,BBCBB,W
+play,1,0,linda001,10,BX,6/P
+play,1,1,bourp001,12,CFFBX,5/P5F
+play,1,1,kendh001,32,BCFBBFB,W
+play,1,1,abreb001,21,BC*B1X,S9/G.1-3
+play,1,1,huntt001,12,S1SFBFX,S7/L.3-H;1-2
+play,1,1,wellv001,12,SCBFX,3/P3F
+play,1,1,calla001,12,CCBX,8/F
+play,2,0,hilla001,22,CBSBFS,K
+play,2,0,rivej001,11,SBX,7/F
+play,2,0,snidt001,02,CSS,K
+play,2,1,trumm001,00,X,8/F
+play,2,1,wilsb002,01,CX,3/G
+play,2,1,woodb003,01,CX,S7/L
+play,2,1,bourp001,02,SFS,K
+play,3,0,nix-j001,22,BCCFBC,K
+play,3,0,molij001,22,BSSBS,K
+play,3,0,davir003,22,BSSBS,K
+play,3,1,kendh001,12,CBFFH,HP
+play,3,1,abreb001,32,CSB1BF*B1FS,K
+play,3,1,huntt001,12,BCFF1FFS,K
+play,3,1,wellv001,00,X,9/F
+play,4,0,escoy001,32,BCMBFBB,W
+play,4,0,bautj002,00,X,54(1)/FO/G-
+play,4,0,linda001,12,C1B1SF1,PO1(13)
+play,4,0,linda001,12,C1B1SF1.FC,K
+play,4,1,calla001,12,BFFFFFX,S1/L+
+play,4,1,trumm001,01,FX,E8/F.1-2
+play,4,1,wilsb002,22,BBCFFX,7/F.2-3
+play,4,1,woodb003,12,BS1SS,K
+play,4,1,bourp001,01,FX,T8/F.3-H(UR);1-H(UR)
+play,4,1,kendh001,02,FSX,9!/F
+play,5,0,hilla001,12,CFFBS,K
+play,5,0,rivej001,12,CSBC,K
+play,5,0,snidt001,00,X,S4/G
+play,5,0,nix-j001,12,BCF1FC,K
+play,5,1,abreb001,00,,NP
+sub,mcdoj003,"John McDonald",0,1,5
+play,5,1,abreb001,00,,NP
+sub,snidt001,"Travis Snider",0,7,8
+play,5,1,abreb001,00,,NP
+sub,nix-j001,"Jayson Nix",0,8,7
+com,"Blue Jays right fielder Rajai Davis left the game due to an injured ankle"
+play,5,1,abreb001,12,...CBSS,K
+play,5,1,huntt001,12,CSBX,53/G
+play,5,1,wellv001,00,X,8/F
+play,6,0,molij001,12,.FFBX,D9/L
+play,6,0,mcdoj003,01,SX,S8/L.2-3
+play,6,0,escoy001,00,X,S7/L.3-H;1-2
+play,6,0,bautj002,22,S*BCBC,K
+play,6,0,linda001,00,X,7/F.2-3;1-2
+play,6,0,hilla001,10,BX,3/P
+play,6,1,calla001,00,X,63/G+
+play,6,1,trumm001,12,CBFX,S8/L-
+play,6,1,wilsb002,32,BB1F*BF1X,54(1)3/GDP
+play,7,0,rivej001,00,X,3/P
+play,7,0,snidt001,32,BBCBFFFS,K23
+play,7,0,nix-j001,12,CBTT,K
+play,7,1,woodb003,22,FBFBS,K
+play,7,1,bourp001,02,CCX,4/P
+play,7,1,kendh001,32,BBSFBFX,13/G-
+play,8,0,molij001,32,FCBFBBX,7/F
+play,8,0,mcdoj003,32,BBCBCB,W
+play,8,0,escoy001,30,BBBB,W.1-2
+play,8,0,bautj002,32,*BBCBTS,K
+play,8,0,linda001,00,,NP
+sub,takah001,"Hisanori Takahashi",1,0,1
+play,8,0,linda001,10,.BX,13/G
+play,8,1,abreb001,00,,NP
+sub,purcd001,"David Purcey",0,0,1
+play,8,1,abreb001,01,.CX,63/G
+play,8,1,huntt001,31,CBBBB,W
+play,8,1,wellv001,22,F11TBBX,4/P
+play,8,1,calla001,30,BB111BB,W.1-2
+play,8,1,trumm001,00,,NP
+sub,richs001,"Scott Richmond",0,0,1
+play,8,1,trumm001,32,.BBSSB>X,8/F
+play,9,0,hilla001,00,,NP
+sub,rodnf001,"Fernando Rodney",1,0,1
+play,9,0,hilla001,11,.CBX,8/F
+play,9,0,rivej001,22,CBBFS,K
+play,9,0,snidt001,02,FCFX,3/G
+data,er,reyej003,1
+data,er,purcd001,0
+data,er,richs001,0
+data,er,weavj003,1
+data,er,takah001,0
+data,er,rodnf001,0

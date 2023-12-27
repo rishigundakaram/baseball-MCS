@@ -59,12 +59,6 @@ def main():
         print(probabilities)
         st.title("2024 MLB Season Predictions")
 
-        st.header("World Series, Division Win, and Playoff Probabilities")
-
-        st.write(
-            "Here are the probabilities for each team to win the World Series, win their division, and make the playoffs, as well as their average number of wins:"
-        )
-
         st.dataframe(
             probabilities,
             hide_index=True,
@@ -73,7 +67,10 @@ def main():
                 "Elo": st.column_config.LineChartColumn(label="Elo"),
             },
         )
-
+        st.divider()
+        st.subheader("Blog Posts")
+        medium_blog_url = "https://medium.com/@rishi.gundakaram/baseball-forecasting-using-monte-carlo-simulation-f789ba0abee2"
+        st.markdown(f"[How Are These Probabilities Calculated?]({medium_blog_url})")
     elif page == "Model Info":
         st.title("About the Model")
         st.write("A Blog post about the model")
