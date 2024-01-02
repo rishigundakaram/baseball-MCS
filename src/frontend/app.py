@@ -1,6 +1,10 @@
 import streamlit as st
 from collections import defaultdict
 import pandas as pd
+from datetime import datetime
+from datetime import timedelta
+
+# import strptime
 
 # Import any other necessary modules or functions from your code
 # transition_probs = [0.24, 0.37, 0.10, 0.05, 0.137, 0.04, 0.004, .079]
@@ -75,9 +79,16 @@ def main():
     files_dates = get_files_and_dates(repo, path)
     dates = list(files_dates.values())
     dates.sort(reverse=True)
-    date = st.sidebar.selectbox(
-        "Choose a date", options=dates, format_func=convert_date
+    input_date = st.date_input("Choose a date", value=None)
+    # given an input date, find the closest date in the list of dates
+    date = min(
+        dates,
+        key=lambda x: max(
+            datetime.strptime(convert_date(x), "%m/%d/%Y").date() - input_date,
+            timedelta(days=0),
+        ),
     )
+
     filename = [k for k, v in files_dates.items() if v == date][0]
     probabilities = pd.read_csv(
         f"https://raw.githubusercontent.com/{repo}/main/{path}/{filename}"
@@ -95,8 +106,8 @@ def main():
     #     color_red_gradient,
     #     subset=["Make Playoffs %", "Win Division %", "Win World Series %"],
     # )
-
-    st.title("2024 MLB Season Predictions")
+    season = date[:4]
+    st.title(f"{season} Season MLB Predictions")
 
     st.dataframe(
         probabilities,
