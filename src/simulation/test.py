@@ -33,8 +33,8 @@ class TestStandings(unittest.TestCase):
             "away_batting_order": [],
             "home_sp": "person",
             "away_sp": "person1",
-            "home_score": 5,
-            "away_score": 4,
+            "true_home_score": 5,
+            "true_away_score": 4,
             "date": "2019/05/23",
         }
         game = BaseballGame(game, to_sim=False)
@@ -57,8 +57,8 @@ class TestStandings(unittest.TestCase):
             "away_batting_order": [],
             "home_sp": "person",
             "away_sp": "person1",
-            "home_score": 5,
-            "away_score": 4,
+            "true_home_score": 5,
+            "true_away_score": 4,
             "date": "2019/05/23",
         }
         game2 = {
@@ -68,8 +68,8 @@ class TestStandings(unittest.TestCase):
             "away_batting_order": [],
             "home_sp": "person",
             "away_sp": "person1",
-            "home_score": 5,
-            "away_score": 4,
+            "true_home_score": 5,
+            "true_away_score": 4,
             "date": "2019/05/24",
         }
         game1 = BaseballGame(game1, to_sim=False)
@@ -107,7 +107,7 @@ class TestSchedule(unittest.TestCase):
         # Mock data for MLBTeams
         all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
         data_stop_date = "2023/03/15"
-        simulator = RandomSimulator()
+        simulator = EloSimulator()
 
         self.schedule = Schedule(all_games_path, data_stop_date, simulator)
 
@@ -122,7 +122,7 @@ class TestSchedule(unittest.TestCase):
     def test_sim(self):
         n = 1
         analyzer = Analyzer(n=n)
-        standings, seeds, outcome = self.schedule.sim(analyzer, n=n)
+        analyzer = self.schedule.sim(analyzer, n=n)
         for game in self.schedule.seasons[-1].reg_season_to_sim:
             self.assertTrue(game.done)
 
@@ -130,8 +130,8 @@ class TestSchedule(unittest.TestCase):
         self.assertGreaterEqual(len(self.schedule.seasons[-1]), 2420)
         n = 1
         analyzer = Analyzer(n=n)
-        standings, seeds, outcome = self.schedule.sim(analyzer, n=n)
-        combined_standings = standings.combine_standings()
+        analyzer = self.schedule.sim(analyzer, n=n)
+        combined_standings = self.schedule.seasons[-1].standings.combine_standings()
         for league in ["AL", "NL"]:
             for division in ["E", "W", "C"]:
                 self.assertEqual(len(combined_standings[league][division]), 5)
@@ -152,8 +152,8 @@ class TestElo(unittest.TestCase):
             "away_batting_order": [],
             "home_sp": "person",
             "away_sp": "person1",
-            "home_score": 5,
-            "away_score": 4,
+            "true_home_score": 5,
+            "true_away_score": 4,
             "date": "2019/05/23",
         }
         game = BaseballGame(game=game)
@@ -170,8 +170,8 @@ class TestElo(unittest.TestCase):
             "away_batting_order": [],
             "home_sp": "person",
             "away_sp": "person1",
-            "home_score": 5,
-            "away_score": 4,
+            "true_home_score": 5,
+            "true_away_score": 4,
             "date": "2019/05/23",
         }
         game = BaseballGame(game=game)

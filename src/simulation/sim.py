@@ -43,6 +43,9 @@ class RandomSimulator(Simulator):
         game.done = True
         return game
 
+    def train(self, game):
+        return 0.5, 0.5
+
 
 class EloSimulator:
     def __init__(self, base_elo=1500, k_factor=20, home_advantage=50):
@@ -62,32 +65,31 @@ class EloSimulator:
 
         :param game: Game object with attributes home_team, away_team, home_score, away_score.
         """
+        home_team = game.home_team
+        away_team = game.away_team
+        home_elo = self.elo[home_team][-1]
+        away_elo = self.elo[away_team][-1]
+
+        # Adjust for home team advantage
+        home_elo_adjusted = home_elo + self.home_advantage
+
+        # Calculate expected win probabilities
+        expected_home_win = 1 / (1 + 10 ** ((away_elo - home_elo_adjusted) / 400))
+        expected_away_win = 1 - expected_home_win
+
+        # Determine winner and loser based on game score
         if game.home_score > game.away_score:
-            winner = game.home_team
-            loser = game.away_team
-            winner_elo = self.elo[winner][-1]
-            loser_elo = self.elo[loser][-1]
-            winner_elo_adjusted = (
-                winner_elo + self.home_advantage
-            )  # Adjust for home advantage
+            winner, loser = home_team, away_team
+            elo_change = self.k_factor * (1 - expected_home_win)
         else:
-            winner = game.away_team
-            loser = game.home_team
-            winner_elo = self.elo[winner][-1]
-            loser_elo = (
-                self.elo[loser][-1] + self.home_advantage
-            )  # Adjust for home advantage
-            winner_elo_adjusted = winner_elo
-
-        expected_winner = 1 / (1 + 10 ** ((loser_elo - winner_elo_adjusted) / 400))
-        expected_loser = 1 - expected_winner
-
-        # Calculate Elo change ensuring zero-sum
-        elo_change = self.k_factor * (1 - expected_winner)
+            winner, loser = away_team, home_team
+            elo_change = self.k_factor * expected_home_win
 
         # Update Elo ratings
-        self.elo[winner].append(winner_elo + elo_change)
-        self.elo[loser].append(loser_elo - elo_change)
+        self.elo[winner].append(self.elo[winner][-1] + elo_change)
+        self.elo[loser].append(self.elo[loser][-1] - elo_change)
+
+        return expected_home_win, expected_away_win
 
     def sim(self, game) -> BaseballGame:
         """

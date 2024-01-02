@@ -101,6 +101,7 @@ class BaseballGame:
         self,
         game,
         to_sim=False,
+        finished=False,
     ):
         self.home_team = game["home_team"]
         self.away_team = game["away_team"]
@@ -116,10 +117,14 @@ class BaseballGame:
         self.away_score = 0
         self.home_sp = game["home_sp"]
         self.away_sp = game["away_sp"]
+        self.done = False
+        if finished:
+            self.true_home_score = game["true_home_score"]
+            self.true_away_score = game["true_away_score"]
         if not to_sim:
+            self.home_score = game["true_home_score"]
+            self.away_score = game["true_away_score"]
             self.done = True
-            self.home_score = game["home_score"]
-            self.away_score = game["away_score"]
 
     def reset(self):
         self.done = False

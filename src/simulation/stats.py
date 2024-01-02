@@ -1,6 +1,6 @@
 from collections import defaultdict
 import pandas as pd
-
+import numpy as np
 from static import MLBTeams
 
 
@@ -137,6 +137,29 @@ class Analyzer:
         return df
 
 
-class Loss:
+class Metrics:
     def __init__(self) -> None:
-        pass
+        self.running_brier = 0
+        self.num_games = 0
+
+    def update(self, game, home_prob, away_prob):
+        actual = [0, 0]
+        if game.true_home_score > game.true_away_score:
+            actual[0] = 1
+        else:
+            actual[1] = 1
+        self.running_brier += self.brier_score([home_prob, away_prob], actual)
+        self.num_games += 1
+
+    def get_brier(self):
+        return self.running_brier / self.num_games
+
+    def reset(self):
+        self.running_brier = 0
+        self.num_games = 0
+
+    def brier_score(self, prediction, actual):
+        prediction = np.array(prediction)
+        actual = np.array(actual)
+
+        return sum((prediction - actual) ** 2)

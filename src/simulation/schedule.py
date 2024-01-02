@@ -3,10 +3,13 @@ from game import BaseballGame
 from collections import defaultdict
 from datetime import datetime, timedelta
 from collections import deque
-from stats import Analyzer
+from stats import Analyzer, Metrics
 from static import MLBTeams
 from alive_progress import alive_bar
 from collections import defaultdict
+import stackprinter
+
+stackprinter.set_excepthook(style="color")
 
 
 def default_game_tracking():
@@ -233,7 +236,15 @@ class Standings:
 
 # TODO: add in support for mid-post season play
 class FullSeason:
-    def __init__(self, year, simulator, latest_game_data, is_complete=True) -> None:
+    def __init__(
+        self,
+        year,
+        simulator,
+        latest_game_data,
+        is_complete=True,
+        metrics=None,
+        sim_post=True,
+    ) -> None:
         self.year = year
         self.reg_season_complete = []
         self.reg_season_to_sim = []
@@ -241,16 +252,23 @@ class FullSeason:
         self.LatestGameData = latest_game_data
         self.simulator = simulator
         self.standings = Standings()
+        self.metrics = metrics
+        self.sim_post = sim_post
         pass
 
     def __len__(self):
         return len(self.reg_season_complete) + len(self.reg_season_to_sim)
 
     def add_game(self, game, before_cuttoff=True) -> None:
-        if game["regular_season"] and before_cuttoff:
-            self.reg_season_complete.append(BaseballGame(game, to_sim=False))
-        elif game["regular_season"] and not before_cuttoff:
-            self.reg_season_to_sim.append(BaseballGame(game, to_sim=True))
+        finished = False
+        if "true_home_score" in game.keys():
+            finished = True
+        to_sim = True
+        if before_cuttoff:
+            to_sim = False
+        self.reg_season_complete.append(
+            BaseballGame(game, finished=finished, to_sim=to_sim)
+        )
 
     def prep(self):
         self.reg_season_complete = sorted(
@@ -262,10 +280,16 @@ class FullSeason:
             key=lambda x: datetime.strptime(x.date, "%Y/%m/%d"),
         )
 
+        self.last_date = self.reg_season_complete[-1].date
+        if len(self.reg_season_to_sim) > 0:
+            self.last_date = self.reg_season_to_sim[-1].date
+
         for game in self.reg_season_complete:
             self.LatestGameData.update(game, sim=False)
             self.standings.update_standings(game, sim=False)
-            self.simulator.train(game)
+            home_prob, away_prob = self.simulator.train(game)
+            if self.metrics:
+                self.metrics.update(game, home_prob, away_prob)
 
     def get_is_complete(self):
         return (len(self.reg_season_to_sim)) == 0
@@ -278,15 +302,18 @@ class FullSeason:
 
     def sim(self):
         for game in self.reg_season_to_sim:
-            self.simulator.sim(game)
+            home_prob, away_prob = self.simulator.sim(game)
+            if self.metrics:
+                self.metrics.update(game, home_prob, away_prob)
             self.standings.update_standings(game, sim=True)
             self.LatestGameData.update(game, sim=True)
-            last_date = game.date
-
-        # calculate the standings
-        seeds = self.standings.calculate_seeds()
-        # sim playoffs
-        outcome = self.sim_postseason(seeds, start_date=last_date)
+        seeds = None
+        outcome = None
+        if self.sim_post:
+            # calculate the standings
+            seeds = self.standings.calculate_seeds()
+            # sim playoffs
+            outcome = self.sim_postseason(seeds, start_date=self.last_date)
         return self.standings, seeds, outcome
 
     def sim_postseason(self, seeds, start_date):
@@ -360,7 +387,7 @@ class FullSeason:
                 "home_score": 0,
                 "away_score": 0,
             }
-            game = self.simulator.sim(BaseballGame(game, to_sim=True))
+            game = self.simulator.sim(BaseballGame(game, finished=False, to_sim=True))
             if game.home_score > game.away_score:
                 home_wins += 1
             else:
@@ -372,9 +399,16 @@ class FullSeason:
 
 # TODO: Add functionality to deal with simulating playoffs during the playoffs
 class Schedule:
-    def __init__(self, all_games_path, data_stop_date, simulator) -> None:
+    def __init__(
+        self,
+        all_games_path,
+        data_stop_date,
+        simulator,
+        metrics=None,
+        sim_post=True,
+    ) -> None:
         data_stop_date = datetime.strptime(data_stop_date, "%Y/%m/%d")
-
+        self.metrics = metrics
         with open(all_games_path, "r") as f:
             all_games = json.load(f)
         self.latest_game_data = LatestGameData()
@@ -389,7 +423,12 @@ class Schedule:
 
             if year not in self.seasons:
                 self.seasons[year] = FullSeason(
-                    year, simulator, self.latest_game_data, is_complete=is_complete
+                    year,
+                    simulator,
+                    self.latest_game_data,
+                    is_complete=is_complete,
+                    sim_post=sim_post,
+                    metrics=metrics,
                 )
 
             before_cuttoff = date <= data_stop_date
@@ -420,7 +459,7 @@ class Schedule:
                 standings, seeds, outcome = self.seasons[-1].sim()
                 analyzer.update(standings, seeds, outcome)
                 bar()
-        return analyzer
+        return analyzer, self.metrics
 
 
 from sim import RandomSimulator, EloSimulator
@@ -429,11 +468,20 @@ from pprint import pprint
 if __name__ == "__main__":
     all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
     data_stop_date = "2023/08/01"
+    metrics = Metrics()
     simulator = EloSimulator(k_factor=5, home_advantage=0)
-    schedule = Schedule(all_games_path, data_stop_date, simulator)
+    schedule = Schedule(
+        all_games_path,
+        data_stop_date,
+        simulator,
+        metrics=metrics,
+    )
     n = 1000
     analyzer = Analyzer(n=n)
-    analyzer = schedule.sim(analyzer, n=n)
+    schedule.sim(analyzer, n=n)
+    schedule.prep()
+    score = metrics.get_brier()
+    print(score)
     out = analyzer.export(simulator)
     out.data_stop_date = data_stop_date
     out.to_csv("/home/projects/baseball-MCS/data/final/probabilities.csv")
