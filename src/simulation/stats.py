@@ -139,27 +139,33 @@ class Analyzer:
 
 class Metrics:
     def __init__(self) -> None:
-        self.running_brier = 0
-        self.num_games = 0
+        self.train_running_brier = 0
+        self.train_num_games = 0
+        self.test_running_brier = 0
+        self.test_num_games = 0
 
-    def update(self, game, home_prob, away_prob):
-        actual = [0, 0]
-        if game.true_home_score > game.true_away_score:
-            actual[0] = 1
+    def update(self, game, home_prob, train=True):
+        # Calculate the Brier score
+        true = 1 if game.home_score > game.away_score else 0
+        if train:
+            self.train_running_brier += (true - home_prob) ** 2
+            self.train_num_games += 1
         else:
-            actual[1] = 1
-        self.running_brier += self.brier_score([home_prob, away_prob], actual)
-        self.num_games += 1
+            self.test_running_brier += (true - home_prob) ** 2
+            self.test_num_games += 1
 
     def get_brier(self):
-        return self.running_brier / self.num_games
+        # check if there are any games
+        train = None
+        test = None
+        if self.train_num_games > 0:
+            train = self.train_running_brier / self.train_num_games
+        if self.test_num_games > 0:
+            test = self.test_running_brier / self.test_num_games
+        return train, test
 
     def reset(self):
-        self.running_brier = 0
-        self.num_games = 0
-
-    def brier_score(self, prediction, actual):
-        prediction = np.array(prediction)
-        actual = np.array(actual)
-
-        return sum((prediction - actual) ** 2)
+        self.train_running_brier = 0
+        self.train_num_games = 0
+        self.test_running_brier = 0
+        self.test_num_games = 0

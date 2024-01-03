@@ -289,7 +289,7 @@ class FullSeason:
             self.standings.update_standings(game, sim=False)
             home_prob, away_prob = self.simulator.train(game)
             if self.metrics:
-                self.metrics.update(game, home_prob, away_prob)
+                self.metrics.update(game, home_prob, train=True)
 
     def get_is_complete(self):
         return (len(self.reg_season_to_sim)) == 0
@@ -302,9 +302,9 @@ class FullSeason:
 
     def sim(self):
         for game in self.reg_season_to_sim:
-            home_prob, away_prob = self.simulator.sim(game)
+            home_prob, _ = self.simulator.sim(game)
             if self.metrics:
-                self.metrics.update(game, home_prob, away_prob)
+                self.metrics.update(game, home_prob, train=False)
             self.standings.update_standings(game, sim=True)
             self.LatestGameData.update(game, sim=True)
         seeds = None
@@ -405,10 +405,12 @@ class Schedule:
         data_stop_date,
         simulator,
         metrics=None,
+        analyzer=None,
         sim_post=True,
     ) -> None:
         data_stop_date = datetime.strptime(data_stop_date, "%Y/%m/%d")
         self.metrics = metrics
+        self.analyzer = analyzer
         with open(all_games_path, "r") as f:
             all_games = json.load(f)
         self.latest_game_data = LatestGameData()
@@ -451,15 +453,15 @@ class Schedule:
         for season in self.seasons:
             season.prep()
 
-    def sim(self, analyzer, n=1):
+    def sim(self, n=1):
         self.prep()
         with alive_bar(n) as bar:
             for i in range(n):
                 self.seasons[-1].reset()
                 standings, seeds, outcome = self.seasons[-1].sim()
-                analyzer.update(standings, seeds, outcome)
+                self.analyzer.update(standings, seeds, outcome)
                 bar()
-        return analyzer, self.metrics
+        return self.analyzer, self.metrics
 
 
 from sim import RandomSimulator, EloSimulator
@@ -467,22 +469,20 @@ from pprint import pprint
 
 if __name__ == "__main__":
     all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
-    data_stop_date = "2023/08/01"
-    metrics = Metrics()
-    simulator = EloSimulator(k_factor=5, home_advantage=0)
-    schedule = Schedule(
-        all_games_path,
-        data_stop_date,
-        simulator,
-        metrics=metrics,
-    )
+    data_stop_date = "2023/05/01"
     n = 1000
+    metrics = Metrics()
+    simulator = EloSimulator(k_factor=5.3, home_advantage=24.45)
     analyzer = Analyzer(n=n)
-    schedule.sim(analyzer, n=n)
+    schedule = Schedule(
+        all_games_path, data_stop_date, simulator, metrics=metrics, analyzer=analyzer
+    )
     schedule.prep()
-    score = metrics.get_brier()
-    print(score)
+    schedule.sim(n=n)
+    print(len(schedule.seasons))
+    # score = metrics.get_brier()
+    # print(score)
     out = analyzer.export(simulator)
     out.data_stop_date = data_stop_date
-    out.to_csv("/home/projects/baseball-MCS/data/final/probabilities.csv")
+    out.to_csv("/home/projects/baseball-MCS/data/final/2024_05_01.csv")
     print(out)

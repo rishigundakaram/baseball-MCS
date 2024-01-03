@@ -108,8 +108,9 @@ class TestSchedule(unittest.TestCase):
         all_games_path = "/home/projects/baseball-MCS/data/intermediate/all_games.json"
         data_stop_date = "2023/03/15"
         simulator = EloSimulator()
-
-        self.schedule = Schedule(all_games_path, data_stop_date, simulator)
+        self.schedule = Schedule(
+            all_games_path, data_stop_date, simulator, analyzer=Analyzer(n=1)
+        )
 
     def test_data_types(self):
         for season in self.schedule.seasons:
@@ -121,16 +122,15 @@ class TestSchedule(unittest.TestCase):
 
     def test_sim(self):
         n = 1
-        analyzer = Analyzer(n=n)
-        analyzer = self.schedule.sim(analyzer, n=n)
+        analyzer = self.schedule.sim(n=n)
         for game in self.schedule.seasons[-1].reg_season_to_sim:
             self.assertTrue(game.done)
 
     def test_num_games(self):
         self.assertGreaterEqual(len(self.schedule.seasons[-1]), 2420)
         n = 1
-        analyzer = Analyzer(n=n)
-        analyzer = self.schedule.sim(analyzer, n=n)
+
+        analyzer = self.schedule.sim(n=n)
         combined_standings = self.schedule.seasons[-1].standings.combine_standings()
         for league in ["AL", "NL"]:
             for division in ["E", "W", "C"]:
