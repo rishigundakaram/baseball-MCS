@@ -80,7 +80,7 @@ def main():
     dates = list(files_dates.values())
     dates.sort(reverse=True)
     input_date = st.date_input(
-        "Interested in Historical predictions? Choose a date", value=None
+        "Interested in Historical predictions? Choose a date", value="today"
     )
     # given an input date, find the closest date in the list of dates
     date = min(
