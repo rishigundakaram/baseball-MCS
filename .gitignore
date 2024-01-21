@@ -2,3 +2,4 @@ data/raw/*
 data/intermediate/*
 web/node_modules/*
 web/cache/*
+.streamlit/secrets.toml
