@@ -6,14 +6,17 @@ import pandas as pd
 from enum import Enum
 from enum import Enum, auto
 
+
 class League(Enum):
     AMERICAN_LEAGUE = auto()
     NATIONAL_LEAGUE = auto()
+
 
 class Division(Enum):
     EAST = auto()
     CENTRAL = auto()
     WEST = auto()
+
 
 class MLBTeam(Enum):
     # American League East
@@ -58,6 +61,7 @@ class MLBTeam(Enum):
     SAN_DIEGO_PADRES = (135, "SD", League.NATIONAL_LEAGUE, Division.WEST)
     SAN_FRANCISCO_GIANTS = (137, "SF", League.NATIONAL_LEAGUE, Division.WEST)
 
+
 team_abbrev_to_enum = {
     "BAL": MLBTeam.BALTIMORE_ORIOLES,
     "BOS": MLBTeam.BOSTON_RED_SOX,
@@ -88,103 +92,136 @@ team_abbrev_to_enum = {
     "COL": MLBTeam.COLORADO_ROCKIES,
     "LAD": MLBTeam.LOS_ANGELES_DODGERS,
     "SD": MLBTeam.SAN_DIEGO_PADRES,
-    "SF": MLBTeam.SAN_FRANCISCO_GIANTS
+    "SF": MLBTeam.SAN_FRANCISCO_GIANTS,
 }
 
+
 class BaseballGame:
-    def __init__(self, transition_probs, home_team, away_team):
-        self.transition_probs = transition_probs
-        # require home and away teams to be Rosters of players
-        self.home_team = home_team
-        self.away_team = away_team
+    def __init__(
+        self,
+        game,
+        to_sim=False,
+        finished=False,
+    ):
+        self.home_team = game["home_team"]
+        self.away_team = game["away_team"]
+        self.date = game["date"]
+        self.home_batting_order = game["home_batting_order"]
+        self.away_batting_order = game["away_batting_order"]
         self.inning = 1
         self.outs = 0
+        self.home_batting_position = 0
+        self.away_batting_position = 0
+        self.bases = [0, 0, 0]
         self.home_score = 0
         self.away_score = 0
-        self.bases = [0,0,0]
-        self.home_batting_order = 0
-        self.away_batting_order = 0
+        self.home_sp = game["home_sp"]
+        self.away_sp = game["away_sp"]
+        self.done = False
+        if finished:
+            self.true_home_score = game["true_home_score"]
+            self.true_away_score = game["true_away_score"]
+        if not to_sim:
+            self.home_score = game["true_home_score"]
+            self.away_score = game["true_away_score"]
+            self.done = True
 
-    def simulate_inning(self):
+    def reset(self):
+        self.done = False
+        self.home_score = 0
+        self.away_score = 0
+        self.inning = 1
         self.outs = 0
-        self.bases = [0, 0, 0]
-        batting_order = self.away_batting_order
-        while self.outs < 3:
-            outcome = random.choices(
-                population=['strikeout', 'groundout', 'flyout', 'single', 'double', 'triple', 'homerun', 'walk'],
-                weights=self.transition_probs,
-                k=1
-            )[0]
+        self.home_batting_position = 0
+        self.away_batting_position = 0
 
-            if outcome == 'strikeout' or outcome == 'groundout' or outcome == 'flyout':
-                self.outs += 1
-            else:
-                self.bases[0], self.bases[1], self.bases[2], outs, runs = self.update_bases(outcome)
-                self.outs += outs
-                self.away_score += runs
+    # def simulate_inning(self):
+    #     self.outs = 0
+    #     self.bases = [0, 0, 0]
+    #     batting_order = self.away_batting_order
+    #     while self.outs < 3:
+    #         pitcher = self.away_sp
+    #         outcome = self.TransitionModel.sample()
 
-            batting_order = (batting_order + 1) % len(self.away_team)
-        self.away_batting_order = batting_order
+    #         if outcome == "strikeout" or outcome == "groundout" or outcome == "flyout":
+    #             self.outs += 1
+    #         else:
+    #             (
+    #                 self.bases[0],
+    #                 self.bases[1],
+    #                 self.bases[2],
+    #                 outs,
+    #                 runs,
+    #             ) = self.update_bases(outcome)
+    #             self.outs += outs
+    #             self.away_score += runs
 
-        batting_order = self.home_batting_order
-        self.outs = 0
-        self.bases = [0, 0, 0]
-        while self.outs < 3:
-            outcome = random.choices(
-                population=['strikeout', 'groundout', 'flyout', 'single', 'double', 'triple', 'homerun', 'walk'],
-                weights=self.transition_probs,
-                k=1
-            )[0]
+    #         batting_order = (batting_order + 1) % len(self.away_team)
+    #     self.away_batting_order = batting_order
 
-            if outcome == 'strikeout' or outcome == 'groundout' or outcome == 'flyout':
-                self.outs += 1
-            else:
-                self.bases[0], self.bases[1], self.bases[2], outs, runs = self.update_bases(outcome)
-                self.outs += outs
-                self.home_score += runs
+    #     batting_order = self.home_batting_order
+    #     self.outs = 0
+    #     self.bases = [0, 0, 0]
+    #     while self.outs < 3:
+    #         outcome =
 
-            batting_order = (batting_order + 1) % len(self.home_team)
-        self.home_batting_order = batting_order
+    #         if outcome == "strikeout" or outcome == "groundout" or outcome == "flyout":
+    #             self.outs += 1
+    #         else:
+    #             (
+    #                 self.bases[0],
+    #                 self.bases[1],
+    #                 self.bases[2],
+    #                 outs,
+    #                 runs,
+    #             ) = self.update_bases(outcome)
+    #             self.outs += outs
+    #             self.home_score += runs
 
+    #         batting_order = (batting_order + 1) % len(self.home_team)
+    #     self.home_batting_order = batting_order
 
-    def update_bases(self, outcome):
-        outs = 0
-        runs = 0
-        bases = self.bases
-        if outcome == 'single': 
-            if bases[2] == 1: 
-                runs += 1
-            bases[0] = 1
-            bases[1] = self.bases[0]
-            bases[2] = bases[1]
-        elif outcome == 'double': 
-            if bases[2] == 1: 
-                runs += 1
-            if bases[1] == 1: 
-                runs += 1
-            bases[0] = 0
-            bases[1] = 1
-            bases[2] = bases[1]
-        elif outcome == 'triple': 
-            if bases[2] == 1: 
-                runs += 1
-            if bases[1] == 1: 
-                runs += 1
-            if bases[0] == 1:  
-                runs += 1
-            bases[2] = 1
-        elif outcome == 'homerun': 
-            runs += sum(bases)
-            bases = [0, 0, 0]
-        return *bases, outs, runs
+    # def update_bases(self, outcome):
+    #     outs = 0
+    #     runs = 0
+    #     bases = self.bases
+    #     if outcome == "single":
+    #         if bases[2] == 1:
+    #             runs += 1
+    #         bases[0] = 1
+    #         bases[1] = self.bases[0]
+    #         bases[2] = bases[1]
+    #     elif outcome == "double":
+    #         if bases[2] == 1:
+    #             runs += 1
+    #         if bases[1] == 1:
+    #             runs += 1
+    #         bases[0] = 0
+    #         bases[1] = 1
+    #         bases[2] = bases[1]
+    #     elif outcome == "triple":
+    #         if bases[2] == 1:
+    #             runs += 1
+    #         if bases[1] == 1:
+    #             runs += 1
+    #         if bases[0] == 1:
+    #             runs += 1
+    #         bases[2] = 1
+    #     elif outcome == "homerun":
+    #         runs += sum(bases)
+    #         bases = [0, 0, 0]
+    #     return *bases, outs, runs
 
-    def play(self):
-        while self.inning <= 9 or (self.inning > 9 and self.home_score == self.away_score):
-            self.simulate_inning()
-            self.inning += 1
+    # def play(self):
+    #     while self.inning <= 9 or (
+    #         self.inning > 9 and self.home_score == self.away_score
+    #     ):
+    #         self.simulate_inning()
+    #         self.inning += 1
 
 
 from collections import defaultdict
+
 
 class Season:
     def __init__(self, transition_probs, team_rosters, schedule):
@@ -204,7 +241,7 @@ class Season:
                 Division.EAST: defaultdict(lambda: {"wins": 0, "losses": 0}),
                 Division.CENTRAL: defaultdict(lambda: {"wins": 0, "losses": 0}),
                 Division.WEST: defaultdict(lambda: {"wins": 0, "losses": 0}),
-            }
+            },
         }
 
         for _ in range(num_seasons):
@@ -218,11 +255,19 @@ class Season:
                 away_division = away_team.value[3]
 
                 if game_result["winner"] == "home":
-                    standings[home_league][home_division][game_result["home_team"]]["wins"] += 1
-                    standings[away_league][away_division][game_result["away_team"]]["losses"] += 1
+                    standings[home_league][home_division][game_result["home_team"]][
+                        "wins"
+                    ] += 1
+                    standings[away_league][away_division][game_result["away_team"]][
+                        "losses"
+                    ] += 1
                 else:
-                    standings[home_league][home_division][game_result["home_team"]]["losses"] += 1
-                    standings[away_league][away_division][game_result["away_team"]]["wins"] += 1
+                    standings[home_league][home_division][game_result["home_team"]][
+                        "losses"
+                    ] += 1
+                    standings[away_league][away_division][game_result["away_team"]][
+                        "wins"
+                    ] += 1
 
         return standings
 
@@ -240,8 +285,17 @@ class Season:
         winner = "home" if game.home_score > game.away_score else "away"
         return {"winner": winner, "home_team": home_team, "away_team": away_team}
 
+
 class Postseason:
-    def __init__(self, transition_probs, team_rosters, nl_div_winners, al_div_winners, nl_wildcards, al_wildcards):
+    def __init__(
+        self,
+        transition_probs,
+        team_rosters,
+        nl_div_winners,
+        al_div_winners,
+        nl_wildcards,
+        al_wildcards,
+    ):
         self.transition_probs = transition_probs
         self.team_rosters = team_rosters
         self.nl_div_winners = nl_div_winners
@@ -266,15 +320,27 @@ class Postseason:
 
     def play_postseason(self):
         # Wild Card games
-        nl_wildcard_winner = self.play_series(self.nl_wildcards[0][0], self.nl_wildcards[1][0], 3)
-        al_wildcard_winner = self.play_series(self.al_wildcards[0][0], self.al_wildcards[1][0], 3)
+        nl_wildcard_winner = self.play_series(
+            self.nl_wildcards[0][0], self.nl_wildcards[1][0], 3
+        )
+        al_wildcard_winner = self.play_series(
+            self.al_wildcards[0][0], self.al_wildcards[1][0], 3
+        )
 
         # Division Series
-        nl_div_series_1 = self.play_series(self.nl_div_winners[Division.WEST], nl_wildcard_winner, 5)
-        nl_div_series_2 = self.play_series(self.nl_div_winners[Division.EAST], self.nl_div_winners[Division.CENTRAL], 5)
+        nl_div_series_1 = self.play_series(
+            self.nl_div_winners[Division.WEST], nl_wildcard_winner, 5
+        )
+        nl_div_series_2 = self.play_series(
+            self.nl_div_winners[Division.EAST], self.nl_div_winners[Division.CENTRAL], 5
+        )
 
-        al_div_series_1 = self.play_series(self.al_div_winners[Division.WEST], al_wildcard_winner, 5)
-        al_div_series_2 = self.play_series(self.al_div_winners[Division.EAST], self.al_div_winners[Division.CENTRAL], 5)
+        al_div_series_1 = self.play_series(
+            self.al_div_winners[Division.WEST], al_wildcard_winner, 5
+        )
+        al_div_series_2 = self.play_series(
+            self.al_div_winners[Division.EAST], self.al_div_winners[Division.CENTRAL], 5
+        )
 
         # Championship Series
         nl_champion = self.play_series(nl_div_series_1, nl_div_series_2, 7)
@@ -284,17 +350,24 @@ class Postseason:
         world_series_champion = self.play_series(nl_champion, al_champion, 7)
         return world_series_champion
 
+
 class FullSeason:
     def __init__(self, transition_probs, team_rosters, schedule):
         self.transition_probs = transition_probs
         self.team_rosters = team_rosters
         self.schedule = schedule
-    def init_results(self): 
+
+    def init_results(self):
         results = {}
         for team in MLBTeam:
-            results[team] = {"division_wins": 0, "playoff_appearances": 0, "world_series_wins": 0, "total_games_won": 0}
+            results[team] = {
+                "division_wins": 0,
+                "playoff_appearances": 0,
+                "world_series_wins": 0,
+                "total_games_won": 0,
+            }
         return results
-    
+
     def play_full_season(self, num_seasons=1):
         results = self.init_results()
 
@@ -317,11 +390,14 @@ class FullSeason:
                     results[team_name]["playoff_appearances"] += 1
                     results[team_name]["total_games_won"] += wildcard[1]["wins"]
 
-            postseason = Postseason(self.transition_probs, self.team_rosters,
-                                    division_winners[League.NATIONAL_LEAGUE],
-                                    division_winners[League.AMERICAN_LEAGUE],
-                                    wildcards[League.NATIONAL_LEAGUE],
-                                    wildcards[League.AMERICAN_LEAGUE],)
+            postseason = Postseason(
+                self.transition_probs,
+                self.team_rosters,
+                division_winners[League.NATIONAL_LEAGUE],
+                division_winners[League.AMERICAN_LEAGUE],
+                wildcards[League.NATIONAL_LEAGUE],
+                wildcards[League.AMERICAN_LEAGUE],
+            )
             world_series_winner = postseason.play_postseason()
             results[world_series_winner]["world_series_wins"] += 1
             print(f"iteration {i} complete")
@@ -334,37 +410,9 @@ class FullSeason:
 
         return results
 
-    
-    def get_playoff_teams(self, standings):
-        division_winners = {
-            League.AMERICAN_LEAGUE: [],
-            League.NATIONAL_LEAGUE: [],
-        }
-        wildcards = {
-            League.AMERICAN_LEAGUE: [],
-            League.NATIONAL_LEAGUE: [],
-        }
-        
-        for league in standings:
-            all_teams = []
-            for division in standings[league]:
-                # Sort teams in division by wins (descending)
-                sorted_teams = sorted(standings[league][division].items(), key=lambda x: x[1]['wins'], reverse=True)
-                # Get division winner
-                division_winner = sorted_teams[0]
-                division_winners[league].append(division_winner)
-                
-                # Add other teams to the list for wildcards
-                all_teams.extend(sorted_teams[1:])
-            
-            # Sort all_teams by wins (descending) and get the top three teams as wildcards
-            all_teams_sorted = sorted(all_teams, key=lambda x: x[1]['wins'], reverse=True)
-            wildcards[league] = all_teams_sorted[:3]
-        return division_winners, wildcards
-
-
 
 from parsers import parse_schedule_file, get_team_roster
+
 
 def get_all_team_rosters():
     rosters = {}
@@ -376,7 +424,8 @@ def get_all_team_rosters():
 
     return rosters
 
-def extract_dataframe(probabilities): 
+
+def extract_dataframe(probabilities):
     team_data = []
     for team, stats in probabilities.items():
         if team is not None:
@@ -399,13 +448,13 @@ def extract_dataframe(probabilities):
     team_data.sort(key=lambda x: x[1], reverse=True)
     team_data = pd.DataFrame(team_data, columns=columns)
     return team_data
-if __name__ == '__main__':
-    transition_probs = [0.24, 0.37, 0.10, 0.05, 0.137, 0.04, 0.004, .079]
+
+
+if __name__ == "__main__":
+    transition_probs = [0.24, 0.37, 0.10, 0.05, 0.137, 0.04, 0.004, 0.079]
     schedule = parse_schedule_file("./data/schedule_2023.txt")
     team_rosters = get_all_team_rosters()
     full_season = FullSeason(transition_probs, team_rosters, schedule)
     probabilities = full_season.play_full_season(num_seasons=1)
     team_data = extract_dataframe(probabilities)
     team_data.to_csv("./data/probabilities.csv")
-
-

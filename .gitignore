@@ -1,5 +1,7 @@
-data/raw/*
+data/raw/playbyplay/*
 data/intermediate/*
 web/node_modules/*
 web/cache/*
 .streamlit/secrets.toml
+__pycache__
+.vscode
