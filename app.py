@@ -3,6 +3,7 @@ from collections import defaultdict
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
+from st_files_connection import FilesConnection
 
 # import strptime
 
@@ -74,28 +75,35 @@ def main():
     st.set_page_config(
         page_title="MLB Forecasting", page_icon=":baseball", layout="wide"
     )
-    repo = "rishigundakaram/baseball-MCS"
-    path = "data/final"
-    files_dates = get_files_and_dates(repo, path)
-    dates = list(files_dates.values())
-    dates.sort(reverse=True)
+    conn = st.connection('s3', type=FilesConnection)
+    dates = conn.read("baseball-forecasting-mcs/dates.json", input_format="json", ttl=600)
+    print(dates)
+    dates = [datetime.strptime(date, "%Y-%m-%d").date() for date in dates]
+    print(dates)
+
+        
+    # repo = "rishigundakaram/baseball-MCS"
+    # path = "data/final"
+    # files_dates = get_files_and_dates(repo, path)
+    # dates = list(files_dates.values())
+    
     input_date = st.date_input(
         "Interested in Historical predictions? Choose a date", value="today"
     )
     # given an input date, find the closest date in the list of dates
+    dates.sort(reverse=True)
     date = min(
         dates,
         key=lambda x: max(
-            datetime.strptime(convert_date(x), "%m/%d/%Y").date() - input_date,
+             x - input_date,
             timedelta(days=0),
         ),
     )
+    print(date)
 
-    filename = [k for k, v in files_dates.items() if v == date][0]
-    probabilities = pd.read_csv(
-        f"https://raw.githubusercontent.com/{repo}/main/{path}/{filename}"
-    )
-
+    filename = f'{date.strftime("%Y_%m_%d")}probabilities.csv'
+    df = conn.read(f"baseball-forecasting-mcs/{filename}", input_format="csv", ttl=600)
+    probabilities = df.loc[:, ~df.columns.str.contains('^Unnamed')]
     custom_style()
     # probabilities = pd.read_csv(
     #     "https://raw.githubusercontent.com/rishigundakaram/baseball-MCS/main/data/final/2023_02_01probabilities.csv"
@@ -103,12 +111,12 @@ def main():
     # probabilities = pd.read_csv(
     #     "/home/projects/baseball-MCS/data/final/probabilities.csv"
     # )
-    probabilities = probabilities.drop(probabilities.columns[0], axis=1)
+    # probabilities = probabilities.drop(probabilities.columns[0], axis=1)
     # probabilities = probabilities.style.applymap(
     #     color_red_gradient,
     #     subset=["Make Playoffs %", "Win Division %", "Win World Series %"],
     # )
-    season = date[:4]
+    season = date.year
     st.title(f"{season} Season MLB Predictions")
 
     st.dataframe(
@@ -121,7 +129,7 @@ def main():
     )
     # italicize and right align the date of the predictions
     st.markdown(
-        f"<p style='text-align: right; font-style: italic;'>Predictions from {convert_date(date)}</p>",
+        f"<p style='text-align: right; font-style: italic;'>Predictions from {date}</p>",
         unsafe_allow_html=True,
     )
     # st.write(f"Predictions From {convert_date(date)}")

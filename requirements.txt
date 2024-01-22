@@ -1,2 +1,2 @@
-s3fs==x.x.x
+s3fs==2023.12.2
 st-files-connection
