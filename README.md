@@ -1,10 +1,12 @@
 ## Baseball Monte Carlo Forecasting
 
 # Overview
+
 This repository contains the code for this [website](https://bball-forecasting.streamlit.app/). On the website you will find a projections of all the MLB teams. Some stats of interest to you may be their projected amount of wins, the probability they make it to the playoffs, and the probability they win the World Series
 
-# How Does it work? 
-Calculating these probabilities rely on a technique known as Monte Carlo Forecasting. If you are unfamiliar and want to learn more see the [Wikipedia] (https://en.wikipedia.org/wiki/Monte_Carlo_method). There are two main componenets to the system. One is developing a model that given a matchup between two teams, will give a probability of either team winning. The second is using these probabilities, randomly sampling thousands of seasons. Across all the seasons we simulate we can count the number of wins, number of times made the playoffs, number of times won the world series for each team, then by averaging we can get associated probabilites. 
+# How Does it work?
+
+Calculating these probabilities rely on a technique known as Monte Carlo Forecasting. If you are unfamiliar and want to learn more see the [Wikipedia](https://en.wikipedia.org/wiki/Monte_Carlo_method). There are two main componenets to the system. One is developing a model that given a matchup between two teams, will give a probability of either team winning. The second is using these probabilities, randomly sampling thousands of seasons. Across all the seasons we simulate we can count the number of wins, number of times made the playoffs, number of times won the world series for each team, then by averaging we can get associated probabilites.
 
 # Todo
 
