@@ -1,15 +1,10 @@
-## Baseball MCS
+## Baseball Monte Carlo Forecasting
 
-We aim to simulate baseball game outcomes using Monte Carlo simulations.
+# Overview
+This repository contains the code for this [website](https://bball-forecasting.streamlit.app/). On the website you will find a projections of all the MLB teams. Some stats of interest to you may be their projected amount of wins, the probability they make it to the playoffs, and the probability they win the World Series
 
-# Usage
-
-You must use python 3.10. The parsing file can parse EVA and EVA files given by Retrosheet play by play logs it can also get the player name from the player id (Useful for obtaining player statistics later).
-
-To use this package:
-
-- first install anaconda from [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
-- run `conda env create -f environment.yml`
+# How Does it work? 
+Calculating these probabilities rely on a technique known as Monte Carlo Forecasting. If you are unfamiliar and want to learn more see the [Wikipedia] (https://en.wikipedia.org/wiki/Monte_Carlo_method). There are two main componenets to the system. One is developing a model that given a matchup between two teams, will give a probability of either team winning. The second is using these probabilities, randomly sampling thousands of seasons. Across all the seasons we simulate we can count the number of wins, number of times made the playoffs, number of times won the world series for each team, then by averaging we can get associated probabilites. 
 
 # Todo
 
